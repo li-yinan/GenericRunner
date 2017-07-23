@@ -16,7 +16,9 @@ export function addCustomNodeSeachPath(path) {
     if (path[path.length - 1] !== sep) {
         path += sep;
     }
-    customNodeSearchPaths.push(path);
+    if (customNodeSearchPaths.indexOf(path) !== -1) {
+        customNodeSearchPaths.push(path);
+    }
 }
 
 export function getNodeClassByType(type) {
