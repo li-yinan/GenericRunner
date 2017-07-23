@@ -89,13 +89,15 @@ await engine.run();
 console.log('done');
 ```
 ## nodes:
-### ready: start node
-### dom: get dom from page
-### launchchrome: initial a headless chrome with a blank page
-### openpage: open a page in headless chrome, return network & dom modules
-### shell: execute a shell command, hold the process util command executed
-### transform: when the input & output requires diffrent struct of data, please use transform to adapt
-### There will be more~
+```
+ready: start node
+dom: get dom from page
+launchchrome: initial a headless chrome with a blank page
+openpage: open a page in headless chrome, return network & dom modules
+shell: execute a shell command, hold the process util command executed
+transform: when the input & output requires diffrent struct of data, please use transform to adapt
+There will be more~
+```
 
 
 ## How can I extends more kind of node?
@@ -112,7 +114,8 @@ addCustomNodeSeachPath('xxx');
 export default class MyNode extends Node {
     name = 'myNode';
 
-    // The type is exactly the same with your filename, genericrunner find your node by filename, so don't make it diffrent 
+    // The type is exactly the same with your filename,
+    // genericrunner find your node by filename, so don't make it diffrent 
     type = 'myNode';
 
     async exec(param) {
