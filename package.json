@@ -1,0 +1,31 @@
+{
+  "name": "genericrunner",
+  "version": "2.0.0",
+  "description": "A generic purpose task runner",
+  "main": "lib/index.js",
+  "scripts": {
+    "dev": "babel-node src/index.js",
+    "build": "scripts/build.sh",
+    "test": "node test/index.js",
+    "testbabel": "babel-node test/babel.js"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1"
+  },
+  "dependencies": {
+    "babel-preset-env": "^1.6.0",
+    "babel-runtime": "^6.23.0",
+    "chrome-launcher": "^0.3.2",
+    "chrome-remote-interface": "^0.24.2",
+    "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
+    "shelljs": "^0.7.8"
+  },
+  "author": "liyinan",
+  "license": "MIT"
+}
