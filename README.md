@@ -28,7 +28,7 @@ let flowConfig = {
             id: '2',
             type: 'openpage',
             options: {
-                url: 'http://www.baidu.com'
+                url: 'http://www.xxx.com'
             },
             name: 'open baidu'
         },
@@ -100,7 +100,7 @@ There will be more~
 ```
 
 
-## How can I extends more kind of node?
+## How can I extends more kinds of node?
 ### very easy:
 ```javascript
 import {
