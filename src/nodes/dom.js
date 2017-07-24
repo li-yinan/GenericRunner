@@ -22,6 +22,9 @@ export default class Dom extends Node {
             nodeId: doc.root.nodeId,
             selector
         });
-        return new ReturnValue(0, doms.nodeIds, this);
+        return new ReturnValue(0, {
+            chrome: chrome,
+            nodeIds: doms.nodeIds
+        }, this);
     }
 }

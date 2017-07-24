@@ -144,19 +144,25 @@ export async function asyncFlowRunner(flow, pairs) {
     async function walk(node, param) {
         nodes.push(new Pair(node, param));
         return new Promise(async (resolve, reject) => {
-            let pair = null;
-            let returnValue = null;
-            while (pair = nodes.shift()) {
-                let {node, param} = pair;
-                returnValue = await node.exec(param);
-                if (node.out > 0) {
-                    // 还有下一步，则把下一步添加到堆栈中
-                    let nextNodes = getNextNodes(node, returnValue);
-                    nodes = nodes.concat(nextNodes.map(node => new Pair(node, returnValue.data)));
+            try {
+                let pair = null;
+                let returnValue = null;
+                while (pair = nodes.shift()) {
+                    let {node, param} = pair;
+                    returnValue = await node.exec(param);
+                    if (node.out > 0) {
+                        // 还有下一步，则把下一步添加到堆栈中
+                        let nextNodes = getNextNodes(node, returnValue);
+                        nodes = nodes.concat(nextNodes.map(node => new Pair(node, returnValue.data)));
+                    }
+                    // 没有下一步了，不用特殊处理，堆栈没了就都执行结束了
                 }
-                // 没有下一步了，不用特殊处理，堆栈没了就都执行结束了
+                resolve(returnValue);
             }
-            resolve(returnValue);
+            catch (e) {
+                console.log(e);
+                throw e;
+            }
         });
     }
 

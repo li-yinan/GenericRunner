@@ -22,7 +22,7 @@ async function main() {
                 id: '2',
                 type: 'openpage',
                 options: {
-                    url: 'http://www.baidu.com'
+                    url: 'http://qiao.baidu.com/home/'
                 },
                 name: 'open baidu'
             },
@@ -38,22 +38,27 @@ async function main() {
                 id: '4',
                 type: 'dom',
                 options: {
-                    selector: 'input'
+                    selector: 'script[src]'
                 },
                 name: 'get dom'
             },
             {
                 id: '5',
-                type: 'transform',
-                options: {
-                    code: 'return arguments[0].network;'
-                },
-                name: 'get network from {chrome, network}'
+                type: 'attribute',
+                name: 'script attribute'
             },
             {
                 id: '6',
-                type: 'url',
-                name: 'urlNode-hello4'
+                type: 'transform',
+                options: {
+                    code: 'return arguments[0].find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
+                },
+                name: 'find b.js'
+            },
+            {
+                id: '7',
+                type: 'console',
+                name: 'console result'
             }
         ],
         links: [
@@ -89,13 +94,6 @@ async function main() {
                 type: 'link',
                 fromId: '4',
                 fromPort: 0,
-                toId: '6',
-                toPort: 0
-            },
-            {
-                type: 'link',
-                fromId: '2',
-                fromPort: 0,
                 toId: '5',
                 toPort: 0
             },
@@ -104,6 +102,13 @@ async function main() {
                 fromId: '5',
                 fromPort: 0,
                 toId: '6',
+                toPort: 0
+            },
+            {
+                type: 'link',
+                fromId: '6',
+                fromPort: 0,
+                toId: '7',
                 toPort: 0
             }
         ]

@@ -34,7 +34,7 @@ export default class SubFlow extends Flow {
     }
 
     async exec(...args) {
-        this.trace(...args);
+        this.trace('exec', ...args);
         // 找到subflow的输入应该映射到内部的哪个node的哪个port，以此来确定subflow初始执行的节点
         let pairs = this.inMap.map((portMap, index) => new Pair(this.getNodeById(portMap.mapId), args[index]));
         // 执行subflow

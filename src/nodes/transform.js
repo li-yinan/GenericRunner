@@ -15,10 +15,17 @@ export default class Transform extends Node{
     type = 'transform';
 
     async exec(param) {
-        let transformCodeStr = this.options.code;
-        let transformFunction = new Function(transformCodeStr);
+        let code = this.options.code;
         super.exec(param);
-        let ret = transformFunction(param);
+        let ret;
+        try {
+            let func = new Function(code);
+            ret = func(param);
+        }
+        catch (e) {
+            console.log(e);
+            throw e;
+        }
         return new ReturnValue(0, ret, this);
     }
 }

@@ -50,14 +50,14 @@ function main() {
                 id: '5',
                 type: 'transform',
                 options: {
-                    code: 'return arguments[0].network;'
+                    code: 'return arguments[0].find(function (item) {return /hm\.baidu\.com\/hm\.js/.test(item.src)});'
                 },
-                name: 'get network from {chrome, network}'
+                name: 'find b.js'
             },
             {
                 id: '6',
-                type: 'url',
-                name: 'urlNode-hello4'
+                type: 'console',
+                name: 'console result'
             }
         ],
         links: [
@@ -92,13 +92,6 @@ function main() {
             {
                 type: 'link',
                 fromId: '4',
-                fromPort: 0,
-                toId: '6',
-                toPort: 0
-            },
-            {
-                type: 'link',
-                fromId: '2',
                 fromPort: 0,
                 toId: '5',
                 toPort: 0
