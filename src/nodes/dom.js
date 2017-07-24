@@ -8,6 +8,7 @@
 
 import Node from './node';
 import ReturnValue from './returnvalue';
+import {chunk, zipObject, zip} from 'lodash';
 
 export default class Dom extends Node {
     name = 'dom';
@@ -22,9 +23,18 @@ export default class Dom extends Node {
             nodeId: doc.root.nodeId,
             selector
         });
+        let nodes = await Promise.all(doms.nodeIds.map(async nodeId => {
+            let ret = await chrome.DOM.getAttributes({nodeId});
+            // headless给的格式很奇葩
+            // 这里把['src', 'http://xxx', 'async', '']的格式转为
+            // {src: 'http://xxx', async: ''} 的格式
+            ret = zipObject.apply(this, zip.apply(this, chunk(ret.attributes, 2)));
+            ret.nodeId = nodeId;
+            return ret;
+        }));
         return new ReturnValue(0, {
-            chrome: chrome,
-            nodeIds: doms.nodeIds
+            chrome,
+            nodes
         }, this);
     }
 }

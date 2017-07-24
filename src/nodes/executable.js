@@ -56,7 +56,7 @@ export default class Executable {
      * 请仔细理解这句话，subflow会在执行完销毁当前subflow的资源，所以请不要在subflow内创建可被外界调用的资源、服务等
      */
     async dispose(...args) {
-        this.trace('dispose: ', ...args);
+        // this.trace('dispose: ', ...args);
     }
 
     trace(name, ...args) {

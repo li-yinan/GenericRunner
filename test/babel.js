@@ -44,19 +44,14 @@ async function main() {
             },
             {
                 id: '5',
-                type: 'attribute',
-                name: 'script attribute'
-            },
-            {
-                id: '6',
                 type: 'transform',
                 options: {
-                    code: 'return arguments[0].find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
+                    code: 'return arguments[0].nodes.find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
                 },
                 name: 'find b.js'
             },
             {
-                id: '7',
+                id: '6',
                 type: 'console',
                 name: 'console result'
             }
