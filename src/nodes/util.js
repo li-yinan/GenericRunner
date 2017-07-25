@@ -98,10 +98,52 @@ export function equal(node1, node2) {
  */
 export class Pair {
     node = null;
-    param = null;
-    constructor(node, param) {
+    params = [];
+    count = 0;
+    ready = false;
+    port = 0;
+    constructor(node, param, port = 0) {
         this.node = node;
-        this.param = param;
+        this.port = port;
+        this.addParam(param, port);
+    }
+
+    addParam(param, port = 0) {
+        this.params[port] = param;
+        this.count++;
+        if (this.node.in === this.count) {
+            this.ready = true;
+        }
+    }
+}
+
+class Fifo {
+    cache = [];
+    index = {};
+
+    push(pair) {
+        let {node, param, port} = pair;
+        if (this.index[node.id]) {
+            this.index[node.id].addParam(param, port);
+        }
+        else {
+            this.cache.push(pair);
+            this.index[node.id] = pair;
+        }
+    }
+
+    shift() {
+        let pair = this.cache.shift();
+        if (!pair) {
+            return;
+        }
+        this.index[pair.node.id] = null;
+        return pair;
+    }
+
+    concat(arr) {
+        arr.map(pair => this.push(pair));
+        return this;
     }
 }
 
@@ -132,7 +174,7 @@ export async function asyncFlowRunner(flow, pairs) {
         // 没有给出初始运行节点
         pairs = startNodes.map(node => new Pair(node));
     }
-    let nodes = [];
+    let nodes = new Fifo();
 
     function getNextNodes(node, returnValue) {
         // 从当前节点找到对应的端口所有的link
@@ -148,12 +190,13 @@ export async function asyncFlowRunner(flow, pairs) {
                 let pair = null;
                 let returnValue = null;
                 while (pair = nodes.shift()) {
-                    let {node, param} = pair;
-                    returnValue = await node.exec(param);
+                    let {node, params} = pair;
+                    returnValue = await node.exec.apply(node, params);
                     if (node.out > 0) {
                         // 还有下一步，则把下一步添加到堆栈中
                         let nextNodes = getNextNodes(node, returnValue);
-                        nodes = nodes.concat(nextNodes.map(node => new Pair(node, returnValue.data)));
+                        let {data, port} = returnValue;
+                        nodes.concat(nextNodes.map(node => new Pair(node, data, port)));
                     }
                     // 没有下一步了，不用特殊处理，堆栈没了就都执行结束了
                 }
