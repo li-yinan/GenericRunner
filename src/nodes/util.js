@@ -103,6 +103,9 @@ export class Pair {
     ready = false;
     port = 0;
     constructor(node, param, port = 0) {
+        if (node.in === 0) {
+            this.ready = true;
+        }
         this.node = node;
         this.port = port;
         this.addParam(param, port);
@@ -133,8 +136,15 @@ class Fifo {
     }
 
     shift() {
+        this.cache.sort((a, b) => {return b.ready - a.ready});
         let pair = this.cache.shift();
         if (!pair) {
+            return;
+        }
+        if (!pair.ready) {
+            // 不太可能出现这种情况，
+            // 只有当当前所有node都没有ready才会这样
+            // 那就是bug了
             return;
         }
         this.index[pair.node.id] = null;
