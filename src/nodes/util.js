@@ -118,6 +118,10 @@ export class Pair {
             this.ready = true;
         }
     }
+
+    setData(data) {
+        this.data = data;
+    }
 }
 
 class Fifo {
@@ -125,9 +129,9 @@ class Fifo {
     index = {};
 
     push(pair) {
-        let {node, param, port} = pair;
+        let {node, params, port} = pair;
         if (this.index[node.id]) {
-            this.index[node.id].addParam(param, port);
+            this.index[node.id].addParam(params[port], port);
         }
         else {
             this.cache.push(pair);
@@ -142,9 +146,10 @@ class Fifo {
             return;
         }
         if (!pair.ready) {
-            // 不太可能出现这种情况，
-            // 只有当当前所有node都没有ready才会这样
-            // 那就是bug了
+            // 把这个节点放到最后
+            this.cache.push(pair);
+            // 这个情况在一个流程中某个node有多个输入时会出现
+            // 当一个流程运行到这样一个节点，但是这个节点的前置依赖并没有被放入队列里就会这样
             return;
         }
         this.index[pair.node.id] = null;
@@ -171,6 +176,8 @@ class Fifo {
  */
 export async function asyncFlowRunner(flow, pairs) {
 
+    let nodes = new Fifo();
+
     // 把所有属于当前flow的node的context设置为属于当前flow
     // 用defineProperty是为了serialize的时候这个context属性不会被serialize
     flow.nodes.map(node => node.context.flow = flow.id);
@@ -184,13 +191,21 @@ export async function asyncFlowRunner(flow, pairs) {
         // 没有给出初始运行节点
         pairs = startNodes.map(node => new Pair(node));
     }
-    let nodes = new Fifo();
 
     function getNextNodes(node, returnValue) {
+        let {data, port} = returnValue;
         // 从当前节点找到对应的端口所有的link
-        let links = flow.links.filter(link => link.fromId === node.id && link.fromPort === returnValue.port);
+        let links = flow.links.filter(link => link.fromId === node.id && link.fromPort === port);
         // 找到每个link对应的node
-        return links.map(link =>  flow.nodes.find(node => node.id === link.toId));
+        return  links.map(link => {
+            return {
+                // 根据link指向的id找到node
+                node: flow.nodes.find(node => node.id === link.toId),
+                // 记录link指向的port
+                port: link.toPort
+            }
+        })
+        .map(obj => new Pair(obj.node, data, obj.port));
     }
 
     async function walk(node, param) {
@@ -204,9 +219,8 @@ export async function asyncFlowRunner(flow, pairs) {
                     returnValue = await node.exec.apply(node, params);
                     if (node.out > 0) {
                         // 还有下一步，则把下一步添加到堆栈中
-                        let nextNodes = getNextNodes(node, returnValue);
-                        let {data, port} = returnValue;
-                        nodes.concat(nextNodes.map(node => new Pair(node, data, port)));
+                        let pairs = getNextNodes(node, returnValue);
+                        nodes.concat(pairs);
                     }
                     // 没有下一步了，不用特殊处理，堆栈没了就都执行结束了
                 }

@@ -5,56 +5,96 @@ async function main() {
         id: 'flow',
         type: 'flow',
         nodes: [
+            //{
+            //    id: '0',
+            //    type: 'ready',
+            //    name: 'ready'
+            //},
+            //{
+            //    id: '1',
+            //    type: 'launchchrome',
+            //    options: {
+            //        port: 9222
+            //    },
+            //    name: 'init chrome headless'
+            //},
+            //{
+            //    id: '2',
+            //    type: 'openpage',
+            //    options: {
+            //        url: 'http://qiao.baidu.com/home/'
+            //    },
+            //    name: 'open baidu'
+            //},
+            //{
+            //    id: '3',
+            //    type: 'transform',
+            //    options: {
+            //        code: 'return arguments[0].chrome;'
+            //    },
+            //    name: 'get chrome from {chrome, network}'
+            //},
+            //{
+            //    id: '4',
+            //    type: 'dom',
+            //    options: {
+            //        selector: 'script[src]'
+            //    },
+            //    name: 'get dom'
+            //},
+            //{
+            //    id: '5',
+            //    type: 'transform',
+            //    options: {
+            //        code: 'return arguments[0].nodes.find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
+            //    },
+            //    name: 'find b.js'
+            //},
+            //{
+            //    id: '6',
+            //    type: 'console',
+            //    name: 'console result'
+            //},
             {
-                id: '0',
+                id: '10',
                 type: 'ready',
-                name: 'ready'
+                name: 'ready a'
             },
             {
-                id: '1',
-                type: 'launchchrome',
-                options: {
-                    port: 9222
-                },
-                name: 'init chrome headless'
-            },
-            {
-                id: '2',
-                type: 'openpage',
-                options: {
-                    url: 'http://qiao.baidu.com/home/'
-                },
-                name: 'open baidu'
-            },
-            {
-                id: '3',
+                id: '11',
                 type: 'transform',
                 options: {
-                    code: 'return arguments[0].chrome;'
+                    code: 'return \'a\';'
                 },
-                name: 'get chrome from {chrome, network}'
+                name: 'return a'
             },
             {
-                id: '4',
-                type: 'dom',
-                options: {
-                    selector: 'script[src]'
-                },
-                name: 'get dom'
+                id: '12',
+                type: 'ready',
+                name: 'ready b'
             },
             {
-                id: '5',
+                id: '13',
                 type: 'transform',
                 options: {
-                    code: 'return arguments[0].nodes.find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
+                    code: 'return \'b\';'
                 },
-                name: 'find b.js'
+                name: 'return b'
             },
             {
-                id: '6',
+                id: '14',
+                type: 'merge',
+                in: 2,
+                options: {
+                    keys: ['port1', 'port2']
+                },
+                name: 'merge a & b'
+            },
+            {
+                id: '15',
                 type: 'console',
-                name: 'console result'
-            }
+                name: 'console merge result'
+            },
         ],
         links: [
             {
@@ -105,7 +145,42 @@ async function main() {
                 fromPort: 0,
                 toId: '7',
                 toPort: 0
-            }
+            },
+            {
+                type: 'link',
+                fromId: '10',
+                fromPort: 0,
+                toId: '11',
+                toPort: 0
+            },
+            {
+                type: 'link',
+                fromId: '12',
+                fromPort: 0,
+                toId: '13',
+                toPort: 0
+            },
+            {
+                type: 'link',
+                fromId: '11',
+                fromPort: 0,
+                toId: '14',
+                toPort: 0
+            },
+            {
+                type: 'link',
+                fromId: '13',
+                fromPort: 0,
+                toId: '14',
+                toPort: 1
+            },
+            {
+                type: 'link',
+                fromId: '14',
+                fromPort: 0,
+                toId: '15',
+                toPort: 0
+            },
         ]
     };
     // let flow = {
