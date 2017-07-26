@@ -66,7 +66,7 @@ export function deserialize(configStr) {
                 // 找到对应的class
                 Clazz = getNodeClassByType(value.type);
                 // 生成实例
-                let instance = new Clazz();
+                let instance = new Clazz(value.options);
                 // 把序列化的值都赋给实例
                 for (var item in value) {
                     if (value.hasOwnProperty(item) && (item in instance)) {

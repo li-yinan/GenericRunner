@@ -15,6 +15,14 @@ export default class Merge extends Node {
 
     type = 'merge';
 
+    constructor(options) {
+        super(options);
+        let keys = options.keys;
+        if (Array.isArray(keys)) {
+            this.in = keys.length;
+        }
+    }
+
     async exec(...args) {
         super.exec(...args);
         let keys = this.options.keys;
