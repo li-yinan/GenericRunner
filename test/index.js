@@ -1,115 +1,51 @@
-var runner = require('../');
-var Engine = runner.Engine;
-var deserialize = runner.deserialize;
-var serialize = runner.serialize;
-var buildFlowFromConfig = runner.buildFlowFromConfig;
+'use strict';
 
-function main() {
-    var flow = {
-        id: 'flow',
-        type: 'flow',
-        nodes: [
-            {
-                id: '0',
-                type: 'ready',
-                name: 'ready'
-            },
-            {
-                id: '1',
-                type: 'launchchrome',
-                options: {
-                    port: 9222
-                },
-                name: 'init chrome headless'
-            },
-            {
-                id: '2',
-                type: 'openpage',
-                options: {
-                    url: 'http://www.baidu.com'
-                },
-                name: 'open baidu'
-            },
-            {
-                id: '3',
-                type: 'transform',
-                options: {
-                    code: 'return arguments[0].chrome;'
-                },
-                name: 'get chrome from {chrome, network}'
-            },
-            {
-                id: '4',
-                type: 'dom',
-                options: {
-                    selector: 'input'
-                },
-                name: 'get dom'
-            },
-            {
-                id: '5',
-                type: 'transform',
-                options: {
-                    code: 'return arguments[0].find(function (item) {return /hm\.baidu\.com\/hm\.js/.test(item.src)});'
-                },
-                name: 'find b.js'
-            },
-            {
-                id: '6',
-                type: 'console',
-                name: 'console result'
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var main = function () {
+    var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
+        var flowInst, engine;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+            while (1) {
+                switch (_context.prev = _context.next) {
+                    case 0:
+                        flowInst = (0, _index.buildFlowFromConfig)(_switch.flow);
+                        // flowInst = deserialize(flowStr);
+
+                        engine = new _index.Engine(flowInst);
+                        _context.next = 4;
+                        return engine.run();
+
+                    case 4:
+                        // console.log(serialize(flowInst));
+                        console.log('done');
+
+                    case 5:
+                    case 'end':
+                        return _context.stop();
+                }
             }
-        ],
-        links: [
-            {
-                type: 'link',
-                fromId: '0',
-                fromPort: 0,
-                toId: '1',
-                toPort: 0
-            },
-            {
-                type: 'link',
-                fromId: '1',
-                fromPort:0, 
-                toId: '2',
-                toPort: 0
-            },
-            {
-                type: 'link',
-                fromId: '2',
-                fromPort: 0,
-                toId: '3',
-                toPort: 0
-            },
-            {
-                type: 'link',
-                fromId: '3',
-                fromPort: 0,
-                toId: '4',
-                toPort: 0
-            },
-            {
-                type: 'link',
-                fromId: '4',
-                fromPort: 0,
-                toId: '5',
-                toPort: 0
-            },
-            {
-                type: 'link',
-                fromId: '5',
-                fromPort: 0,
-                toId: '6',
-                toPort: 0
-            }
-        ]
+        }, _callee, this);
+    }));
+
+    return function main() {
+        return _ref.apply(this, arguments);
     };
-    var flowInst = buildFlowFromConfig(flow);
-    var engine = new Engine(flowInst);
-    engine.run().then(function () {
-        console.log('done');
-    });
-}
+}();
+
+// import {flow} from './conf/getscript';
+
+
+var _index = require('../src/index');
+
+var _switch = require('./conf/switch');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 main();
