@@ -16,9 +16,14 @@ export default class Transform extends Node{
 
     async exec(param) {
         let code = this.options.code;
+        let params = this.options.params;
         super.exec(param);
         let ret;
         try {
+            if (params && params.length) {
+                // 把用户指定的参数名从arguments里解构出来
+                code = 'let [' + params.join(',') + '] = arguments;' + code;
+            }
             let func = new Function(code);
             ret = func(param);
         }
