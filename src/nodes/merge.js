@@ -15,6 +15,12 @@ export default class Merge extends Node {
 
     type = 'merge';
 
+    static declaration = {
+        keys: {
+            type: 'array.*'
+        }
+    };
+
     constructor(options) {
         super(options);
         let keys = options.keys;

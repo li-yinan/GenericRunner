@@ -15,6 +15,12 @@ export default class Dom extends Node {
 
     type = 'dom';
 
+    static declaration = {
+        selector: {
+            type: 'string'
+        }
+    }
+
     async exec(chrome) {
         super.exec(chrome);
         let selector = this.options.selector;

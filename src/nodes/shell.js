@@ -15,9 +15,13 @@ export default class Shell extends Node {
 
     type = 'shell';
 
+    static declaration = {
+        cmd: 'string'
+    };
+
     async exec(param) {
         super.exec(param);
-        let {cmd, waitUntilDone} = this.options;
+        let {cmd} = this.options;
         let ret = shell.exec(cmd);
         return new ReturnValue(0, ret, this);
     }

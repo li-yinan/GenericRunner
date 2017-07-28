@@ -18,6 +18,12 @@ export default class LaunchChrome extends Node {
 
     type = 'launchchrome';
 
+    static declaration = {
+        port: {
+            type: 'number'
+        }
+    };
+
     chromeInstance;
 
     constructor(...args) {

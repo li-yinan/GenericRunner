@@ -15,6 +15,12 @@ export default class OpenPage extends Node {
 
     type = 'openpage';
 
+    static declaration = {
+        url: {
+            type: 'string'
+        }
+    }
+
     async exec(param) {
         super.exec(param);
         let url = this.options.url;

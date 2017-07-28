@@ -22,7 +22,9 @@ export default class Executable {
     //          regexp: /^https?:\/\//
     //      }
     // }
-    declaration = {};
+    // 用于界面生成options需要的表单
+    // 对于options每一项的声明、展现类型、校验
+    static declaration = {};
 
     // node在配置的时候填入的参数
     options = {};

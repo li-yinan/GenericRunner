@@ -14,6 +14,15 @@ export default class Transform extends Node{
 
     type = 'transform';
 
+    static declaration = {
+        params: {
+            type: 'array.string'
+        },
+        code: {
+            type: 'code'
+        }
+    };
+
     async exec(param) {
         let code = this.options.code;
         let params = this.options.params;

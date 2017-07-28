@@ -14,6 +14,15 @@ export default class Transform extends Node{
 
     type = 'switch';
 
+    static declaration = {
+        params: {
+            type: 'array.string'
+        },
+        conditions: {
+            type: 'array.string'
+        }
+    }
+
     async exec(param) {
         let conditions = this.options.conditions || [];
         let params = this.options.params || [];
