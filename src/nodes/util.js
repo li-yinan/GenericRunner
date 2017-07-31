@@ -179,8 +179,7 @@ export async function asyncFlowRunner(flow, pairs) {
     let nodes = new Fifo();
 
     // 把所有属于当前flow的node的context设置为属于当前flow
-    // 用defineProperty是为了serialize的时候这个context属性不会被serialize
-    flow.nodes.map(node => node.context.flow = flow.id);
+    flow.nodes.map(node => node.context.flow = flow);
     // 找到所有初始节点，初始节点就是in的数量是0的节点
     let startNodes = flow.nodes.filter(node => node.in === 0);
     if (pairs) {
@@ -216,6 +215,7 @@ export async function asyncFlowRunner(flow, pairs) {
                 let returnValue = null;
                 while (pair = nodes.shift()) {
                     let {node, params} = pair;
+                    node.context.service = merge(node.context.service, flow.context.service);
                     returnValue = await node.exec.apply(node, params);
                     if (node.out > 0) {
                         // 还有下一步，则把下一步添加到堆栈中

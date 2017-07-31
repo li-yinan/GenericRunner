@@ -18,13 +18,13 @@ export default class LaunchChrome extends Node {
 
     type = 'launchchrome';
 
+    services = ['chrome'];
+
     static declaration = {
         port: {
             type: 'number'
         }
     };
-
-    chromeInstance;
 
     constructor(...args) {
         super(...args);
@@ -47,7 +47,8 @@ export default class LaunchChrome extends Node {
             chromeFlags: ['--headless', '--disable-gpu'],
             port
         });
-        return new ReturnValue(0, this.chromeInstance, this);
+
+        return new ReturnValue(0, null, this);
     }
 
     /**

@@ -1,7 +1,7 @@
 import {Engine, deserialize, serialize, buildFlowFromConfig} from '../src/index';
 
-// import {flow} from './conf/getscript';
-import {flow} from './conf/switch';
+import {flow} from './conf/getscript';
+// import {flow} from './conf/switch';
 
 async function main() {
     let flowInst = buildFlowFromConfig(flow);

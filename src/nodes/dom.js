@@ -21,8 +21,9 @@ export default class Dom extends Node {
         }
     }
 
-    async exec(chrome) {
-        super.exec(chrome);
+    async exec() {
+        super.exec();
+        let chrome = this.context.service.chrome;
         let selector = this.options.selector;
         let doc = await chrome.DOM.getDocument();
         let doms = await chrome.DOM.querySelectorAll({

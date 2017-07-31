@@ -24,14 +24,6 @@ export const flow = {
             name: 'open baidu'
         },
         {
-            id: '3',
-            type: 'transform',
-            options: {
-                code: 'return arguments[0].chrome;'
-            },
-            name: 'get chrome from {chrome, network}'
-        },
-        {
             id: '4',
             type: 'dom',
             options: {
@@ -71,13 +63,6 @@ export const flow = {
         {
             type: 'link',
             fromId: '2',
-            fromPort: 0,
-            toId: '3',
-            toPort: 0
-        },
-        {
-            type: 'link',
-            fromId: '3',
             fromPort: 0,
             toId: '4',
             toPort: 0

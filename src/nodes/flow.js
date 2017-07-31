@@ -20,6 +20,14 @@ export default class Flow extends Executable {
 
     links = [];
 
+    context = {
+        service: {}
+    };
+
+    registerService(key, value) {
+        this.context.service[key] = value;
+    }
+
     async exec(param) {
         await super.exec(param);
         return asyncFlowRunner(this);
