@@ -15,6 +15,8 @@ export default class Dom extends Node {
 
     type = 'dom';
 
+    static dep = ['chrome'];
+
     static declaration = {
         selector: {
             type: 'string'
