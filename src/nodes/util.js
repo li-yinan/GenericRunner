@@ -55,11 +55,43 @@ export function serialize(instance) {
 }
 
 /**
+ * 检查依赖关系是否ok
+ * 把父级的services的声明写入到子节点的parentServices里
+ * 使子节点可以方便的获取到已经有哪些service可用
+ *
+ * @param {Flow} flow flow
+ *
+ */
+async function setParentService(flow) {
+    let {nodes, links} = flow;
+    // 输入为0的是起始node
+    let startNodes = nodes.filter(node => node.in === 0);
+    function getNextNodes(node) {
+        // 找到当前节点的所有输出link
+        return links.filter(link => link.fromId === node.id)
+            // 利用link找到下一个node
+            .map(link => nodes.find(node => node.id === link.toId));
+    }
+    function walk(node) {
+        if (node.out > 0) {
+            let nextNodes = getNextNodes(node);
+            nextNodes.map(nextNode => {
+                // 把当前节点的parentService传递下去
+                // 同时也把当前节点提供的service传递下去
+                nextNode.parentServices = [...node.parentServices, ...node.constructor.services];
+            });
+            nextNodes.map(node => walk(node));
+        }
+    }
+    startNodes.map(node => walk(node));
+}
+
+/**
  * 把一个序列化的数据反序列化为flow或者subflow
  *
  */
 export function deserialize(configStr) {
-    return JSON.parse(configStr, function (key, value) {
+    let flow = JSON.parse(configStr, function (key, value) {
         let Clazz = null;
         if (value.type) {
             try {
@@ -87,6 +119,14 @@ export function deserialize(configStr) {
         }
         return value;
     });
+    try {
+        setParentService(flow);
+    }
+    catch (e) {
+        console.log(e);
+        throw e;
+    }
+    return flow;
 }
 
 export function equal(node1, node2) {

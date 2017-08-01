@@ -8,7 +8,7 @@ async function main() {
     // flowInst = deserialize(flowStr);
     let engine = new Engine(flowInst);
     await engine.run();
-    // console.log(serialize(flowInst));
+    console.log(serialize(flowInst));
     console.log('done');
 }
 

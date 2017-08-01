@@ -28,6 +28,9 @@ export default class Flow extends Executable {
         this.context.service[key] = value;
     }
 
+    checkDep() {
+    }
+
     async exec(param) {
         await super.exec(param);
         return asyncFlowRunner(this);

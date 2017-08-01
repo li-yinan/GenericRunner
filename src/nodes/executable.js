@@ -31,6 +31,14 @@ export default class Executable {
     // 使用static是因为可以在非实例化的场景下直接读取
     static services = [];
 
+    // 所有前级节点拥有的service，方便计算依赖的service是否都有
+    // 初始化就是个空的，会在node实例化的时候赋值
+    parentServices = [];
+
+    // 描述当前node依赖哪些node
+    // 目前只能依赖某种特定type的node，而不能依赖于某个id的node
+    static dep = [];
+
     // node在配置的时候填入的参数
     options = {};
     
@@ -57,6 +65,10 @@ export default class Executable {
             // 这样可以防止未被注册的服务到处传递引起混乱
             this.context.flow.registerService(key, value);
         }
+    }
+
+    checkDep() {
+        return true;
     }
 
     /**

@@ -18,8 +18,6 @@ export default class LaunchChrome extends Node {
 
     type = 'launchchrome';
 
-    services = ['chrome'];
-
     static declaration = {
         port: {
             type: 'number'
