@@ -67,8 +67,12 @@ export default class Executable {
         }
     }
 
-    checkDep() {
-        return true;
+    getService(name) {
+        let service = this.context.service[name];
+        if (service) {
+            return service;
+        }
+        throw `you have to specific declare service '${name}'`;
     }
 
     /**

@@ -19,7 +19,8 @@ export const flow = {
             id: '2',
             type: 'openpage',
             options: {
-                url: 'http://qiao.baidu.com/home/'
+                // url: 'http://qiao.baidu.com/home/'
+                url: 'http://www.baidu.com'
             },
             name: 'open baidu'
         },
@@ -35,7 +36,9 @@ export const flow = {
             id: '5',
             type: 'transform',
             options: {
-                code: 'return arguments[0].nodes.find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
+                params: ['scripts'],
+                // code: 'return scripts.nodes.find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
+                code: 'return scripts.nodes.find(function (item) {return /jquery/.test(item.src)});'
             },
             name: 'find b.js'
         },

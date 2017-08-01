@@ -261,7 +261,13 @@ export async function asyncFlowRunner(flow, pairs) {
                 let returnValue = null;
                 while (pair = nodes.shift()) {
                     let {node, params} = pair;
-                    node.context.service = merge(node.context.service, flow.context.service);
+                    // 传递service
+                    // 只传递声明过的service
+                    let dep = node.constructor.dep;
+                    node.context.service = {};
+                    dep.map(key => {
+                        node.context.service[key] =  flow.context.service[key];
+                    })
                     returnValue = await node.exec.apply(node, params);
                     if (node.out > 0) {
                         // 还有下一步，则把下一步添加到堆栈中
