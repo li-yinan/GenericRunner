@@ -2,7 +2,7 @@ import Flow from './flow';
 import SubFlow from './subflow';
 import Node from './node';
 import {sep} from 'path';
-import {merge} from 'lodash';
+import {merge, uniq, findIndex, difference} from 'lodash';
 
 let customNodeSearchPaths = ['./'];
 
@@ -62,7 +62,7 @@ export function serialize(instance) {
  * @param {Flow} flow flow
  *
  */
-async function setParentService(flow) {
+export function checkDep(flow) {
     let {nodes, links} = flow;
     // 输入为0的是起始node
     let startNodes = nodes.filter(node => node.in === 0);
@@ -73,12 +73,18 @@ async function setParentService(flow) {
             .map(link => nodes.find(node => node.id === link.toId));
     }
     function walk(node) {
+        // 检测当前node的依赖是否满足
+        // different的用法是在第一个参数的数组里找第二个数组里没有的项
+        let unSupportServices = difference(node.constructor.dep, node.parentServices);
+        if (unSupportServices.length) {
+            throw `node: '${node.name}' require service: '${unSupportServices}', but not found`;
+        }
         if (node.out > 0) {
             let nextNodes = getNextNodes(node);
             nextNodes.map(nextNode => {
-                // 把当前节点的parentService传递下去
+                // 把当前节点的parentServices传递下去
                 // 同时也把当前节点提供的service传递下去
-                nextNode.parentServices = [...node.parentServices, ...node.constructor.services];
+                nextNode.parentServices = uniq([...node.parentServices, ...node.constructor.services]);
             });
             nextNodes.map(node => walk(node));
         }
@@ -120,7 +126,7 @@ export function deserialize(configStr) {
         return value;
     });
     try {
-        setParentService(flow);
+        checkDep(flow);
     }
     catch (e) {
         console.log(e);
