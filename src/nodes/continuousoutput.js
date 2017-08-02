@@ -10,6 +10,7 @@
  */
 
 import Node from './node';
+import {merge} from 'lodash';
 
 class VirtualNode extends Node {
 
@@ -21,6 +22,14 @@ class VirtualNode extends Node {
 
     constructor(returnValue) {
         super();
+        let originNode = returnValue.node;
+        // 把virtual node 伪装成原始node
+        let exec = this.exec;
+        merge(this, originNode);
+        // 还原exec方法
+        this.exec = exec;
+        // 改改名字吧，不然都分不清是真的node还是virtual node
+        this.name = 'virtual node ' + this.name;
         this.returnValue = returnValue;
     }
 
@@ -34,7 +43,7 @@ export default class ContinuousOutput {
     cache = [];
     callbacks = [];
 
-    add(returnValue) {
+    output(returnValue) {
         this.cache.push(returnValue);
         this.doOutput();
     }
@@ -44,8 +53,13 @@ export default class ContinuousOutput {
     }
 
     doOutput() {
+        if (!this.callbacks.length) {
+            return;
+        }
         let ret;
         while(ret = this.cache.shift()) {
+            // 回调传入一个伪装成原始node 的virtual node
+            // 这样可以顺着这个virtual node继续执行原始node的后续node
             this.callbacks.map(callback => callback(new VirtualNode(ret)));
         }
     }

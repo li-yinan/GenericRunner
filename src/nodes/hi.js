@@ -25,20 +25,20 @@ export default class Hi extends Node {
 
         let node = this;
 
-        let output = new ContinuousOutput();
+        let continuousOutput = new ContinuousOutput();
 
         let path = this.options.path;
 
         let koa = this.getService('koa');
 
         router.all(path, (ctx, next) => {
-            output.add(new ReturnValue(0, 'hello', node));
+            continuousOutput.output(new ReturnValue(0, 'hello', node));
             ctx.body = 'Hello Koa';
         });
 
         koa.use(router.routes(), router.allowedMethods());
-        
+
         // return new ReturnValue(0, null, this);
-        return output;
+        return continuousOutput;
     }
 }
