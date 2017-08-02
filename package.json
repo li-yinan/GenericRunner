@@ -24,6 +24,8 @@
     "babel-runtime": "^6.23.0",
     "chrome-launcher": "^0.3.2",
     "chrome-remote-interface": "^0.24.2",
+    "koa": "^2.3.0",
+    "koa-router": "^7.2.1",
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
     "shelljs": "^0.7.8"

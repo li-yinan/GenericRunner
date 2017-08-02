@@ -54,6 +54,11 @@ export default class Executable {
             writable: true,
             value: this.context
         });
+        Object.defineProperty(this, 'parentServices', {
+            enumerable: false,
+            writable: true,
+            value: this.context
+        });
     }
 
     registerService(key, value) {
