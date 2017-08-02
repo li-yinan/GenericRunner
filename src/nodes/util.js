@@ -260,46 +260,36 @@ export async function asyncFlowRunner(flow, pairs) {
             try {
                 let pair = null;
                 let returnValue = null;
-                let running = false;
-                async function run() {
-                    if (running) {
-                        return;
-                    }
-                    running = true;
-                    while (pair = nodes.shift()) {
-                        let {node, params} = pair;
-                        // 传递service
-                        // 只传递声明过的service
-                        let dep = node.constructor.dep;
-                        node.context.service = {};
-                        dep.map(key => {
-                            node.context.service[key] =  flow.context.service[key];
-                        })
-                        // 执行node
-                        let ret = await node.exec.apply(node, params);
-                        if (ret instanceof ContinuousOutput) {
-                            // 当前node的返回值是一个持续输出类型
-                            // 注册事件，接收持续产生的输出
-                            ret.onoutput(function (node) {
-                                // 回调的参数是一个VirtualNode
-                                // 用于仿造一个node，放到堆栈里，
-                                nodes.push(new Pair(node));
-                                run();
-                            });
+                while (pair = nodes.shift()) {
+                    let {node, params} = pair;
+                    // 传递service
+                    // 只传递声明过的service
+                    let dep = node.constructor.dep;
+                    node.context.service = {};
+                    dep.map(key => {
+                        node.context.service[key] =  flow.context.service[key];
+                    })
+                    // 执行node
+                    let ret = await node.exec.apply(node, params);
+                    if (ret instanceof ContinuousOutput) {
+                        // 当前node的返回值是一个持续输出类型
+                        // 注册事件，接收持续产生的输出
+                        ret.onoutput(function (node) {
+                            // 回调的参数是一个VirtualNode
+                            // 用于仿造一个node，放到堆栈里，
+                            walk(node);
+                        });
 
-                        } else {
-                            returnValue = ret;
-                            if (node.out > 0) {
-                                // 还有下一步，则把下一步添加到堆栈中
-                                let pairs = getNextNodes(node, returnValue);
-                                nodes.concat(pairs);
-                            }
+                    } else {
+                        returnValue = ret;
+                        if (node.out > 0) {
+                            // 还有下一步，则把下一步添加到堆栈中
+                            let pairs = getNextNodes(node, returnValue);
+                            nodes.concat(pairs);
                         }
-                        // 没有下一步了，不用特殊处理，堆栈没了就都执行结束了
                     }
-                    running = false;
+                    // 没有下一步了，不用特殊处理，堆栈没了就都执行结束了
                 }
-                await run();
                 resolve(returnValue);
             }
             catch (e) {
