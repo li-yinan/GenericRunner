@@ -3,7 +3,7 @@ import SubFlow from './subflow';
 import Node from './node';
 import ContinuousOutput from './continuousoutput';
 import {sep} from 'path';
-import {merge, uniq, findIndex, difference} from 'lodash';
+import {merge, uniq, find, findIndex, difference} from 'lodash';
 
 let customNodeSearchPaths = ['./'];
 
@@ -67,6 +67,13 @@ export function checkDep(flow) {
     let {nodes, links} = flow;
     // 输入为0的是起始node
     let startNodes = nodes.filter(node => node.in === 0);
+    if (flow.type === 'subflow') {
+        // subflow需要找到输入口，添加到startnodes里
+        let subflowEntries = flow.options.inMap.map(map => {
+            return find(nodes, node => node.id === map.toId);
+        });
+        startNodes = startNodes.concat(subflowEntries);
+    }
     function getNextNodes(node) {
         // 找到当前节点的所有输出link
         return links.filter(link => link.fromId === node.id)
@@ -74,6 +81,9 @@ export function checkDep(flow) {
             .map(link => nodes.find(node => node.id === link.toId));
     }
     function walk(node) {
+        if (node.type === 'subflow') {
+            return checkDep(node);
+        }
         // 检测当前node的依赖是否满足
         // different的用法是在第一个参数的数组里找第二个数组里没有的项
         let unSupportServices = difference(node.constructor.dep, node.parentServices);
@@ -311,5 +321,10 @@ export async function asyncFlowRunner(flow, pairs) {
 }
 
 export function buildFlowFromConfig(conf) {
-    return deserialize(JSON.stringify(conf));
+    try {
+        return deserialize(JSON.stringify(conf));
+    } 
+    catch (e) {
+        console.log(e);
+    }
 }
