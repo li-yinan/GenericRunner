@@ -11,6 +11,7 @@
 import Flow from './flow';
 import ReturnValue from './returnvalue';
 import {asyncFlowRunner, Pair} from './util';
+import {uniq} from 'lodash';
 
 export default class SubFlow extends Flow {
     name = 'subflow';
@@ -18,7 +19,7 @@ export default class SubFlow extends Flow {
     type = 'subflow';
 
 
-    options: {
+    options = {
         // 用于把subFlow的输入映射到某个node的输入
         // inMap的第一项为subflow的input的port 0，以此类推
         inMap: [],
@@ -30,6 +31,12 @@ export default class SubFlow extends Flow {
         // 代表当id为xxx的node执行完，并且在这个node的port 1输出，则把这个结果映射到subflow的port 0(因为这个对象在outMap的第0个位置)
         // 不懂的问liyinan
        outMap: []
+    }
+
+    buildDep() {
+        this.dep = uniq(this.nodes.reduce((all, node) => {
+            return all.concat(node.dep);
+        }, []));
     }
 
     getNodeById(id) {

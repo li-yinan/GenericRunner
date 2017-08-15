@@ -18,7 +18,7 @@ export default class Hi extends Node {
 
     type = 'hi';
 
-    static dep = ['koa'];
+    dep = ['koa'];
 
     async exec(param) {
         super.exec(param);

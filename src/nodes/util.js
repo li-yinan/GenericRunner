@@ -68,6 +68,8 @@ export function checkDep(flow) {
     // 输入为0的是起始node
     let startNodes = nodes.filter(node => node.in === 0);
     if (flow.type === 'subflow') {
+        // subflow要动态的计算依赖
+        flow.buildDep();
         // subflow需要找到输入口，添加到startnodes里
         let subflowEntries = flow.options.inMap.map(map => {
             return find(nodes, node => node.id === map.toId);
@@ -81,12 +83,10 @@ export function checkDep(flow) {
             .map(link => nodes.find(node => node.id === link.toId));
     }
     function walk(node) {
-        if (node.type === 'subflow') {
-            return checkDep(node);
-        }
         // 检测当前node的依赖是否满足
         // different的用法是在第一个参数的数组里找第二个数组里没有的项
-        let unSupportServices = difference(node.constructor.dep, node.parentServices);
+        // 这里subflow里的node会需要subflow自身的services，先组合一下再检测
+        let unSupportServices = difference(node.dep, [node.parentServices, ...flow.parentServices]);
         if (unSupportServices.length) {
             throw `node: '${node.name}' require service: '${unSupportServices}', but not found`;
         }
@@ -95,9 +95,12 @@ export function checkDep(flow) {
             nextNodes.map(nextNode => {
                 // 把当前节点的parentServices传递下去
                 // 同时也把当前节点提供的service传递下去
-                nextNode.parentServices = uniq([...node.parentServices, ...node.constructor.services]);
+                nextNode.parentServices = uniq([...node.parentServices, ...node.constructor.services, ...flow.parentServices]);
             });
             nextNodes.map(node => walk(node));
+        }
+        if (node.type === 'subflow') {
+            checkDep(node);
         }
     }
     startNodes.map(node => walk(node));
@@ -274,11 +277,10 @@ export async function asyncFlowRunner(flow, pairs) {
                     let {node, params} = pair;
                     // 传递service
                     // 只传递声明过的service
-                    let dep = node.constructor.dep;
                     node.context.service = {};
-                    dep.map(key => {
+                    node.dep.map(key => {
                         node.context.service[key] =  flow.context.service[key];
-                    })
+                    });
                     // 执行node
                     let ret = await node.exec.apply(node, params);
                     if (ret instanceof ContinuousOutput) {

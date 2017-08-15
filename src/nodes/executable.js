@@ -36,8 +36,12 @@ export default class Executable {
     parentServices = [];
 
     // 描述当前node依赖哪些node
-    // 目前只能依赖某种特定type的node，而不能依赖于某个id的node
-    static dep = [];
+    // 原来的设计是一个static的属性，
+    // 因为node的依赖是确定的，不随着实例化而变化
+    // 但是后来发现subflow也需要dep，
+    // subflow是根据里面的node的dep计算出自身dep的，
+    // 所以就变为了一个实例属性
+    dep = [];
 
     // node在配置的时候填入的参数
     options = {};
@@ -54,11 +58,11 @@ export default class Executable {
             writable: true,
             value: this.context
         });
-        Object.defineProperty(this, 'parentServices', {
-            enumerable: false,
-            writable: true,
-            value: this.context
-        });
+        // Object.defineProperty(this, 'parentServices', {
+        //     enumerable: false,
+        //     writable: true,
+        //     value: this.context
+        // });
     }
 
     registerService(key, value) {
