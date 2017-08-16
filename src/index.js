@@ -4,6 +4,7 @@ export {
     addCustomNodeSeachPath,
     deserialize,
     getNodes,
+    postfix,
     serialize
 } from './nodes/util/util';
 import node from './nodes/util/node';

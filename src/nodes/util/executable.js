@@ -53,7 +53,7 @@ export default class Executable {
     // 描述有多少个输出，通常是一个，switch之类的是多个
     out = 1;
 
-    constructor() {
+    constructor(config) {
         // 把静态的type赋值给实例
         this.type = this.constructor.type;
         Object.defineProperty(this, 'context', {
@@ -64,7 +64,12 @@ export default class Executable {
         Object.defineProperty(this, 'parentServices', {
             enumerable: false,
             writable: true,
-            value: this.context
+            value: this.parentServices
+        });
+        Object.defineProperty(this, 'dep', {
+            enumerable: false,
+            writable: true,
+            value: this.dep
         });
     }
 

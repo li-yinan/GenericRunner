@@ -20,9 +20,9 @@ export default class Merge extends Node {
         }
     };
 
-    constructor(options) {
-        super(options);
-        let keys = options.keys;
+    constructor(config) {
+        super(config);
+        let keys = config.options.keys;
         if (Array.isArray(keys)) {
             this.in = keys.length;
         }

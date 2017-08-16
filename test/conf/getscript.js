@@ -1,5 +1,6 @@
 export const flow = {
     id: 'flow',
+    name: 'get script flow',
     type: 'flow',
     nodes: [
         {

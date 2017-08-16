@@ -3,6 +3,7 @@ import {
     deserialize,
     serialize,
     getNodes,
+    postfix,
     buildFlowFromConfig
 } from '../src/index';
 
@@ -14,6 +15,7 @@ import {flow} from './conf/getscript';
 
 async function main() {
     let flowInst = buildFlowFromConfig(flow);
+    // console.log(flowInst);
     // flowInst = deserialize(flowStr);
     let engine = new Engine(flowInst);
     await engine.run();
@@ -21,9 +23,19 @@ async function main() {
     console.log('done');
 }
 
-(async function () {
-    let nodeClasses = await getNodes();
-    console.log(nodeClasses);
-})();
+// (async function () {
+//     let nodeClasses = await getNodes();
+//     console.log(nodeClasses);
+// })();
 
 // main();
+
+
+console.log(postfix( {
+    id: '14',
+    type: 'merge',
+    options: {
+        keys: ['port1', 'port2']
+    },
+    name: 'merge a & b'
+}));

@@ -9,7 +9,7 @@
 import Node from './util/node';
 import ReturnValue from './util/returnvalue';
 
-export default class Ready extends Node{
+export default class Ready extends Node {
 
     static type = 'ready';
 

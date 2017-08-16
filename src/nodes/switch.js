@@ -21,6 +21,10 @@ export default class Transform extends Node{
             type: 'array.string'
         }
     }
+    constructor(config) {
+        super(config);
+        this.out = config.options.conditions.length;
+    }
 
     async exec(param) {
         let conditions = this.options.conditions || [];

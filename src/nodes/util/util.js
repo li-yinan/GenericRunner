@@ -27,6 +27,15 @@ export function addCustomNodeSeachPath(path) {
     }
 }
 
+/**
+ * 用于修正每个node实例在新建完成后的in和out，需要子类实现
+ *
+ * @param {Object} instance 实例配置
+ *
+ * @return {Object}
+ */
+export let postfix = createInstance;
+
 export function getNodeClassByType(type) {
     let node = null;
     // 加入node_modules搜索路径
@@ -156,36 +165,39 @@ export function checkDep(flow) {
     startNodes.map(node => walk(node));
 }
 
+function createInstance(config) {
+    try {
+        // 找到对应的class
+        let Clazz = getNodeClassByType(config.type);
+        // 生成实例
+        let instance = new Clazz(config);
+        // 把序列化的值都赋给实例
+        for (var item in config) {
+            if (config.hasOwnProperty(item) && (item in instance)) {
+                if (item === 'options') {
+                    instance[item] = merge(instance[item], config[item]);
+                }
+                else {
+                    // 其他的直接覆盖
+                    instance[item] = config[item];
+                }
+            }
+        }
+        return instance;
+    }
+    catch (e) {
+        console.log('>>>error: ', e);
+    }
+}
+
 /**
  * 把一个序列化的数据反序列化为flow或者subflow
  *
  */
 export function deserialize(configStr) {
     let flow = JSON.parse(configStr, function (key, value) {
-        let Clazz = null;
         if (value.type) {
-            try {
-                // 找到对应的class
-                Clazz = getNodeClassByType(value.type);
-                // 生成实例
-                let instance = new Clazz(value.options);
-                // 把序列化的值都赋给实例
-                for (var item in value) {
-                    if (value.hasOwnProperty(item) && (item in instance)) {
-                        if (item === 'options') {
-                            instance[item] = merge(instance[item], value[item]);
-                        }
-                        else {
-                            // 其他的直接覆盖
-                            instance[item] = value[item];
-                        }
-                    }
-                }
-                return instance;
-            }
-            catch (e) {
-                console.log('>>>error: ', e);
-            }
+            return createInstance(value);
         }
         return value;
     });
