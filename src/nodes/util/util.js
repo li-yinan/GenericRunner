@@ -2,8 +2,13 @@ import Flow from '../flow';
 import SubFlow from '../subflow';
 import Node from './node';
 import ContinuousOutput from './continuousoutput';
-import {sep} from 'path';
+import {sep, join} from 'path';
+import {readdir, stat} from 'fs';
+import pify from 'pify';
 import {merge, uniq, find, findIndex, difference} from 'lodash';
+
+let readDirP = pify(readdir);
+let statP = pify(stat);
 
 let customNodeSearchPaths = ['../'];
 
@@ -30,7 +35,6 @@ export function getNodeClassByType(type) {
     for (var i = 0; i < customPaths.length; i++) {
         let customPath = customPaths[i];
         try {
-            // util和node的实现都在同一级，直接当前目录查找
             // 这里不能用path.join，path.join('./', 'xxx') => 'xxx' 会丢失前面的./
             node = require(customPath + type);
         }
@@ -45,6 +49,52 @@ export function getNodeClassByType(type) {
         node = node.default;
     }
     return node;
+}
+
+/**
+ * 获取所有的node
+ *
+ * @return {Array.<Node>}
+ */
+export async function getNodes() {
+    let ret = {};
+    let customPaths = customNodeSearchPaths.concat('../../../node_modules/');
+    await Promise.all(customPaths.map(async customPath => {
+        let childFiles = await readDirP(join(__dirname, customPath));
+        await Promise.all(childFiles.map(async fileName => {
+            if (/^[\.]/.test(fileName)) {
+                // 隐藏文件不管
+                return;
+            }
+
+            try {
+                let clazz;
+                if (/node_modules/.test(customPath)) {
+                    clazz = require(fileName);
+                }
+                else {
+                    // 如果是文件夹就直接跳过
+                    let fileStat = await statP(join(__dirname, customPath, fileName));
+                    if (fileStat.isDirectory()) {
+                        return;
+                    }
+                    clazz = require(customPath + fileName);
+                }
+                if (clazz.default) {
+                    clazz = clazz.default;
+                }
+                if (new RegExp('^' + clazz.type).test(fileName)) {
+                    ret[clazz.type] = clazz;
+                }
+            }
+            catch (e) {
+                // 这里可能是由于node_modules下的模块不能直接require名字，而是需要require内部文件，就会报错
+                // console.log(e);
+            }
+            return ;
+        }));
+    }));
+    return ret;
 }
 
 /**

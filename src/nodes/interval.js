@@ -11,9 +11,8 @@ import ReturnValue from './util/returnvalue';
 import ContinuousOutput from './util/continuousoutput';
 
 export default class Interval extends Node {
-    name = 'interval';
 
-    type = 'interval';
+    static type = 'interval';
 
     in = 0;
 

@@ -11,9 +11,7 @@ import {equal, asyncFlowRunner} from './util/util';
  */
 export default class Flow extends Executable {
 
-    name = 'flow';
-
-    type = 'flow';
+    static type = 'flow';
 
     // 这里不对subflow进行展开，只包含当前flow的内容
     nodes = [];

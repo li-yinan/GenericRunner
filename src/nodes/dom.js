@@ -11,9 +11,8 @@ import ReturnValue from './util/returnvalue';
 import {chunk, zipObject, zip} from 'lodash';
 
 export default class Dom extends Node {
-    name = 'dom';
 
-    type = 'dom';
+    static type = 'dom';
 
     dep = ['chrome'];
 

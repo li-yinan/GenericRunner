@@ -10,9 +10,8 @@ import Node from './util/node';
 import ReturnValue from './util/returnvalue';
 
 export default class Transform extends Node{
-    name = 'switch';
 
-    type = 'switch';
+    static type = 'switch';
 
     static declaration = {
         params: {

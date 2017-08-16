@@ -1,4 +1,10 @@
-import {Engine, deserialize, serialize, buildFlowFromConfig} from '../src/index';
+import {
+    Engine,
+    deserialize,
+    serialize,
+    getNodes,
+    buildFlowFromConfig
+} from '../src/index';
 
 import {flow} from './conf/getscript';
 // import {flow} from './conf/switch';
@@ -15,4 +21,9 @@ async function main() {
     console.log('done');
 }
 
-main();
+(async function () {
+    let nodeClasses = await getNodes();
+    console.log(nodeClasses);
+})();
+
+// main();

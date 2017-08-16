@@ -12,9 +12,8 @@ import Koa from 'koa';
 import http from 'http';
 
 export default class LaunchKoa extends Node {
-    name = 'launchkoa';
 
-    type = 'launchkoa';
+    static type = 'launchkoa';
 
     static services = ['koa'];
     constructor(...args) {

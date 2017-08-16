@@ -14,9 +14,8 @@ import ReturnValue from './util/returnvalue';
 let chromeLauncher = require('chrome-launcher');
 
 export default class LaunchChrome extends Node {
-    name = 'launchchrome';
 
-    type = 'launchchrome';
+    static type = 'launchchrome';
 
     static declaration = {
         port: {

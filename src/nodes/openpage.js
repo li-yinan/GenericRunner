@@ -11,9 +11,8 @@ import ReturnValue from './util/returnvalue';
 import cri from 'chrome-remote-interface';
 
 export default class OpenPage extends Node {
-    name = 'openpage';
 
-    type = 'openpage';
+    static type = 'openpage';
 
     // 注册chrome的service
     static services = ['chrome'];

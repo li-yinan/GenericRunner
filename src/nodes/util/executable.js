@@ -4,7 +4,8 @@ export default class Executable {
 
     id = 'defaultId';
     // 当前node的类型
-    type = 'executable';
+    // 这个属性需要静态读取，所以需要是static
+    static type = 'executable';
 
     // 展现名称，也用于执行路径记录
     // 需子类override
@@ -53,16 +54,18 @@ export default class Executable {
     out = 1;
 
     constructor() {
+        // 把静态的type赋值给实例
+        this.type = this.constructor.type;
         Object.defineProperty(this, 'context', {
             enumerable: false,
             writable: true,
             value: this.context
         });
-        // Object.defineProperty(this, 'parentServices', {
-        //     enumerable: false,
-        //     writable: true,
-        //     value: this.context
-        // });
+        Object.defineProperty(this, 'parentServices', {
+            enumerable: false,
+            writable: true,
+            value: this.context
+        });
     }
 
     registerService(key, value) {

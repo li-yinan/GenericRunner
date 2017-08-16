@@ -14,9 +14,8 @@ import Router from 'koa-router';
 let router = Router();
 
 export default class Hi extends Node {
-    name = 'hi';
 
-    type = 'hi';
+    static type = 'hi';
 
     dep = ['koa'];
 

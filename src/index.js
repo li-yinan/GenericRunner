@@ -3,6 +3,7 @@ export {
     buildFlowFromConfig,
     addCustomNodeSeachPath,
     deserialize,
+    getNodes,
     serialize
 } from './nodes/util/util';
 import node from './nodes/util/node';

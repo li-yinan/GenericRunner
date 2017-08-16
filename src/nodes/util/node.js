@@ -5,7 +5,7 @@ export default class Node extends Executable {
     options = {};
 
     // 当前node的类型
-    type = 'node';
+    static type = 'node';
 
     // 展现名称，也用于执行路径记录
     // 需子类override

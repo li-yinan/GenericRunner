@@ -10,9 +10,8 @@ import Node from './util/node';
 import ReturnValue from './util/returnvalue';
 
 export default class Console extends Node {
-    name = 'console';
 
-    type = 'console';
+    static type = 'console';
 
     out = 0;
 

@@ -10,9 +10,8 @@ import Node from './util/node';
 import ReturnValue from './util/returnvalue';
 
 export default class Ready extends Node{
-    name = 'ready';
 
-    type = 'ready';
+    static type = 'ready';
 
     in = 0;
 

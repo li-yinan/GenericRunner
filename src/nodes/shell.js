@@ -11,9 +11,8 @@ import shell from 'shelljs';
 import ReturnValue from './util/returnvalue';
 
 export default class Shell extends Node {
-    name = 'shell';
 
-    type = 'shell';
+    static type = 'shell';
 
     static declaration = {
         cmd: 'string'

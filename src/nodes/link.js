@@ -11,9 +11,10 @@ export default class Link {
     toId = '';
     toPort = 0;
 
-    // 展现名称，也用于执行路径记录
-    // 需子类override
-    name = 'default';
+    static type = 'link';
 
-    type = 'link';
+    constructor() {
+        // 把静态的type赋值给实例
+        this.type = this.constructor.type;
+    }
 }

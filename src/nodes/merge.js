@@ -11,9 +11,8 @@ import ReturnValue from './util/returnvalue';
 import {zipObject} from 'lodash';
 
 export default class Merge extends Node {
-    name = 'merge';
 
-    type = 'merge';
+    static type = 'merge';
 
     static declaration = {
         keys: {

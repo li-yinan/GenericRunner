@@ -14,9 +14,8 @@ import {asyncFlowRunner, Pair} from './util/util';
 import {uniq} from 'lodash';
 
 export default class SubFlow extends Flow {
-    name = 'subflow';
 
-    type = 'subflow';
+    static type = 'subflow';
 
 
     options = {
