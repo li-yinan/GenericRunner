@@ -6,9 +6,9 @@
  * @date 2017-08-02
  */
 
-import Node from './node';
-import ReturnValue from './returnvalue';
-import ContinuousOutput from './continuousoutput';
+import Node from './util/node';
+import ReturnValue from './util/returnvalue';
+import ContinuousOutput from './util/continuousoutput';
 
 export default class Interval extends Node {
     name = 'interval';

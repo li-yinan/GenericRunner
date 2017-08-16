@@ -9,8 +9,8 @@
  */
 
 import Flow from './flow';
-import ReturnValue from './returnvalue';
-import {asyncFlowRunner, Pair} from './util';
+import ReturnValue from './util/returnvalue';
+import {asyncFlowRunner, Pair} from './util/util';
 import {uniq} from 'lodash';
 
 export default class SubFlow extends Flow {

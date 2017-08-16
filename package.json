@@ -9,7 +9,7 @@
     "prepublish": "npm run build",
     "postpublish": "rm -rf ./lib",
     "test": "node test/index.js",
-    "testbabel": "babel-node --inspect test/babel.js"
+    "testbabel": "babel-node test/babel.js"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

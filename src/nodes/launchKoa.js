@@ -6,8 +6,8 @@
  * @date 2017-08-2
  */
 
-import Node from './node';
-import ReturnValue from './returnvalue';
+import Node from './util/node';
+import ReturnValue from './util/returnvalue';
 import Koa from 'koa';
 import http from 'http';
 

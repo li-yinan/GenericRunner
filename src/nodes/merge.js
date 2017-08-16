@@ -6,8 +6,8 @@
  * @date 2017-07-23
  */
 
-import Node from './node';
-import ReturnValue from './returnvalue';
+import Node from './util/node';
+import ReturnValue from './util/returnvalue';
 import {zipObject} from 'lodash';
 
 export default class Merge extends Node {

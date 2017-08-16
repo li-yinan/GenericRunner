@@ -6,8 +6,8 @@
  * @date 2017-07-26
  */
 
-import Node from './node';
-import ReturnValue from './returnvalue';
+import Node from './util/node';
+import ReturnValue from './util/returnvalue';
 
 export default class Transform extends Node{
     name = 'switch';

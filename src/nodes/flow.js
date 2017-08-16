@@ -1,5 +1,5 @@
-import Executable from './executable';
-import {equal, asyncFlowRunner} from './util';
+import Executable from './util/executable';
+import {equal, asyncFlowRunner} from './util/util';
 
 /**
  * 为什么Flow extends node呢？

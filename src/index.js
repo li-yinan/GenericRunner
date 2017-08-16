@@ -4,9 +4,9 @@ export {
     addCustomNodeSeachPath,
     deserialize,
     serialize
-} from './nodes/util';
-import node from './nodes/node';
-import returnvalue from './nodes/returnvalue';
+} from './nodes/util/util';
+import node from './nodes/util/node';
+import returnvalue from './nodes/util/returnvalue';
 
 export const Node = node;
 export const ReturnValue = returnvalue;

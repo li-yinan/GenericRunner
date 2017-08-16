@@ -6,9 +6,9 @@
  * @date 2017-07-23
  */
 
-import Node from './node';
+import Node from './util/node';
 import shell from 'shelljs';
-import ReturnValue from './returnvalue';
+import ReturnValue from './util/returnvalue';
 
 export default class Shell extends Node {
     name = 'shell';

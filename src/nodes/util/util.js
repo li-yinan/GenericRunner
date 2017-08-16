@@ -1,11 +1,11 @@
-import Flow from './flow';
-import SubFlow from './subflow';
+import Flow from '../flow';
+import SubFlow from '../subflow';
 import Node from './node';
 import ContinuousOutput from './continuousoutput';
 import {sep} from 'path';
 import {merge, uniq, find, findIndex, difference} from 'lodash';
 
-let customNodeSearchPaths = ['./'];
+let customNodeSearchPaths = ['../'];
 
 /**
  * 添加一个用户自定义的搜索路径，可以在node实例化的时候使用用户的实现
