@@ -86,7 +86,7 @@ export function checkDep(flow) {
         // 检测当前node的依赖是否满足
         // different的用法是在第一个参数的数组里找第二个数组里没有的项
         // 这里subflow里的node会需要subflow自身的services，先组合一下再检测
-        let unSupportServices = difference(node.dep, [node.parentServices, ...flow.parentServices]);
+        let unSupportServices = difference(node.dep, [...node.parentServices, ...flow.parentServices]);
         if (unSupportServices.length) {
             throw `node: '${node.name}' require service: '${unSupportServices}', but not found`;
         }
