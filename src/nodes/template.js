@@ -1,5 +1,5 @@
 /**
- * @file shell node 用于执行shell命令的node
+ * @file template node 用于生成页面的node
  * 
  * @author liyinan
  * @version 1.0
@@ -7,23 +7,24 @@
  */
 
 import Node from './util/node';
-import shell from 'shelljs';
 import ReturnValue from './util/returnvalue';
 
-export default class Shell extends Node {
+export default class Console extends Node {
 
-    static type = 'shell';
+    static type = 'template';
 
     static declaration = {
-        cmd: {
+        type: {
+            type: 'string'
+        },
+        template: {
             type: 'string'
         }
     };
 
     async exec(param) {
         super.exec(param);
-        let {cmd} = this.options;
-        let ret = shell.exec(cmd);
-        return new ReturnValue(0, ret, this);
+        console.log(param);
+        return new ReturnValue(0, null, this);
     }
 }

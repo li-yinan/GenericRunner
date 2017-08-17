@@ -103,6 +103,8 @@ export async function getNodes() {
             return ;
         }));
     }));
+    delete ret.link;
+    delete ret.flow;
     return ret;
 }
 

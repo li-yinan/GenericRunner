@@ -28,14 +28,14 @@ async function main() {
 //     console.log(nodeClasses);
 // })();
 
-// main();
+main();
 
 
-console.log(postfix( {
-    id: '14',
-    type: 'merge',
-    options: {
-        keys: ['port1', 'port2']
-    },
-    name: 'merge a & b'
-}));
+// console.log(postfix( {
+//     id: '14',
+//     type: 'merge',
+//     options: {
+//         keys: ['port1', 'port2']
+//     },
+//     name: 'merge a & b'
+// }));
