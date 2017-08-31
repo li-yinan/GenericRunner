@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "babel-node src/index.js",
     "build": "scripts/build.sh",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "postpublish": "rm -rf ./lib",
     "test": "node test/index.js",
     "testbabel": "babel-node test/babel.js"

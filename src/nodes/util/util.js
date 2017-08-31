@@ -40,7 +40,7 @@ export function getNodeClassByType(type) {
     let node = null;
     // 加入node_modules搜索路径
     // 这里运行时加入是希望用户添加的路径可以优先于node_modules搜索
-    let customPaths = customNodeSearchPaths.concat('conan-plugin-');
+    let customPaths = customNodeSearchPaths.concat('generic-runner-plugin-');
     for (var i = 0; i < customPaths.length; i++) {
         let customPath = customPaths[i];
         try {

@@ -17,6 +17,8 @@ export default class Hi extends Node {
 
     static type = 'hi';
 
+    static services = ['httprequest'];
+
     dep = ['koa'];
 
     async exec(param) {
@@ -31,7 +33,8 @@ export default class Hi extends Node {
         let koa = this.getService('koa');
 
         router.all(path, (ctx, next) => {
-            continuousOutput.output(new ReturnValue(0, 'hello', node));
+            node.registerService('httprequest', ctx);
+            continuousOutput.output(new ReturnValue(0, null, node));
             ctx.body = 'Hello Koa';
         });
 

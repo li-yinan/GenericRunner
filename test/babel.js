@@ -7,11 +7,12 @@ import {
     buildFlowFromConfig
 } from '../src/index';
 
-import {flow} from './conf/getscript';
+// import {flow} from './conf/getscript';
 // import {flow} from './conf/switch';
 // import {flow} from './conf/koa';
 // import {flow} from './conf/subflow';
 // import {flow} from './conf/interval';
+import {flow} from './conf/thirdpart';
 
 async function main() {
     let flowInst = buildFlowFromConfig(flow);
@@ -28,6 +29,9 @@ async function main() {
 //     console.log(nodeClasses);
 // })();
 
+// import * as example from 'generic-runner-plugin-example';
+// console.log('>>>><<<<<');
+// console.log(example);
 main();
 
 
