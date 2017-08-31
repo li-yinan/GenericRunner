@@ -1,3 +1,8 @@
+## 2.6.0
+
+### 增加了对第三方模块开发的支持
+增加了对第三方开发的模板，https://github.com/li-yinan/generic-runner-plugin-example
+
 ## 2.5.2
 
 ### 修复getNodes函数，把flow和link从结果中删除

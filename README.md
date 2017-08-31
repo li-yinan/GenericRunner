@@ -116,7 +116,7 @@ export default class MyNode extends Node {
 
     // The type is exactly the same with your filename,
     // genericrunner find your node by filename, so don't make it diffrent 
-    type = 'myNode';
+    static type = 'myNode';
 
     async exec(param) {
         super.exec(param);
@@ -130,3 +130,17 @@ export default class MyNode extends Node {
 }
 
 ```
+### another way
+#### publish your own npm
+git clone https://github.com/li-yinan/generic-runner-plugin-example
+modify package.json
+rename these code
+```
+{
+    "name": "generic-runner-plugin-xxx",
+    "description": "xxx",
+    "version": "xxx",
+    "author": "xxx"
+}
+```
+then npm publish
