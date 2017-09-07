@@ -55,6 +55,6 @@ export default class LaunchChrome extends Node {
      */
     async dispose() {
         await super.dispose()
-        return this.chromeInstance.kill();
+        return this.chromeInstance && this.chromeInstance.kill();
     }
 }

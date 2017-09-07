@@ -22,7 +22,7 @@ export function addCustomNodeSeachPath(path) {
     if (path[path.length - 1] !== sep) {
         path += sep;
     }
-    if (customNodeSearchPaths.indexOf(path) !== -1) {
+    if (customNodeSearchPaths.indexOf(path) === -1) {
         customNodeSearchPaths.push(path);
     }
 }
