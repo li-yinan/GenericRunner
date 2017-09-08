@@ -17,15 +17,9 @@ export default class OpenPage extends Node {
     // 注册chrome的service
     static services = ['chrome'];
 
-    static declaration = {
-        url: {
-            type: 'string'
-        }
-    }
-
     async exec(param) {
         super.exec(param);
-        let url = this.options.url;
+        let url = param;
         let client = await cri();
         this.registerService('chrome', client);
         let {Page, Network, DOM} = client;
