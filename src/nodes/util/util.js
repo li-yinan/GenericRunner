@@ -360,8 +360,6 @@ export async function asyncFlowRunner(flow, pairs) {
                             // 回调的参数是一个VirtualNode
                             // 用于仿造一个node，放到堆栈里，
                             vnode.setSession(node.getSession() + '_' + cnt++);
-                            console.log('vnode:', vnode.getSession());
-                            console.log('node:', node.getSession());
                             walk(vnode);
                         });
 
