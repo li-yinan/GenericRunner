@@ -11,7 +11,9 @@ export default class Executable {
     // 需子类override
     name = 'executable';
 
-    context = {};
+    context = {
+        session: 's'
+    };
 
     // TODO
     // 用于描述options里字段的验证信息
@@ -71,6 +73,14 @@ export default class Executable {
             writable: true,
             value: this.dep
         });
+    }
+
+    setSession(session) {
+        this.context.session = session;
+    }
+
+    getSession() {
+        return this.context.session;
     }
 
     registerService(key, value) {

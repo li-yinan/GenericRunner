@@ -141,7 +141,8 @@ export function checkDep(flow) {
         // 找到当前节点的所有输出link
         return links.filter(link => link.fromId === node.id)
             // 利用link找到下一个node
-            .map(link => nodes.find(node => node.id === link.toId));
+            .map(link => nodes.find(node => node.id === link.toId))
+            .filter(n => n.getSession().indexOf(node.getSession()));
     }
     function walk(node) {
         // 检测当前node的依赖是否满足
@@ -246,6 +247,10 @@ export class Pair {
     setData(data) {
         this.data = data;
     }
+
+    setSession(session) {
+        this.node.setSession(session);
+    }
 }
 
 class Fifo {
@@ -331,6 +336,7 @@ export async function asyncFlowRunner(flow, pairs) {
         .map(obj => new Pair(obj.node, data, obj.port));
     }
 
+    let cnt = 0;
     async function walk(node, param) {
         nodes.push(new Pair(node, param));
         return new Promise(async (resolve, reject) => {
@@ -350,10 +356,13 @@ export async function asyncFlowRunner(flow, pairs) {
                     if (ret instanceof ContinuousOutput) {
                         // 当前node的返回值是一个持续输出类型
                         // 注册事件，接收持续产生的输出
-                        ret.onoutput(function (node) {
+                        ret.onoutput(function (vnode) {
                             // 回调的参数是一个VirtualNode
                             // 用于仿造一个node，放到堆栈里，
-                            walk(node);
+                            vnode.setSession(node.getSession() + '_' + cnt++);
+                            console.log('vnode:', vnode.getSession());
+                            console.log('node:', node.getSession());
+                            walk(vnode);
                         });
 
                     } else {
@@ -361,6 +370,9 @@ export async function asyncFlowRunner(flow, pairs) {
                         if (node.out > 0) {
                             // 还有下一步，则把下一步添加到堆栈中
                             let pairs = getNextNodes(node, returnValue);
+                            pairs.map(pair => {
+                                pair.setSession(node.getSession());
+                            });
                             nodes.concat(pairs);
                         }
                     }
