@@ -8,7 +8,7 @@
 
 import Node from './util/node';
 import ReturnValue from './util/returnvalue';
-import cri from 'chrome-remote-interface';
+import puppeteer from 'puppeteer';
 
 export default class OpenPage extends Node {
 
@@ -17,22 +17,19 @@ export default class OpenPage extends Node {
     // 注册chrome的service
     static services = ['chrome'];
 
+
     async exec(param) {
         super.exec(param);
+
         let url = param;
-        let client = await cri();
-        this.registerService('chrome', client);
-        let {Page, Network, DOM} = client;
-        // 记录请求，由于请求是事件的方式，每次新的事件到来都会给这个数组增加一项
-        // 传递给下一个node的是这个数组的引用，直接读取就可以获取到已经产生的所有请求
-        let networkCollection = [];
-        // 监听网络请求
-        Network.requestWillBeSent(params => {
-            networkCollection.push(params);
-        });
-        await Promise.all([DOM.enable(), Page.enable(), Network.enable()]);
-        await Page.navigate({url});
-        await Page.loadEventFired();
+
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+
+        await page.goto(url, {waitUntil: 'networkidle'});
+
+        this.registerService('chrome', page);
+
         return new ReturnValue(0, null, this);
     }
 }

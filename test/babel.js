@@ -19,7 +19,9 @@ async function main() {
     // console.log(flowInst);
     // flowInst = deserialize(flowStr);
     let engine = new Engine(flowInst);
+    let timer = new Date();
     await engine.run();
+    console.log('time cost: ', new Date() - timer);
     // console.log(serialize(flowInst));
     console.log('done');
 }

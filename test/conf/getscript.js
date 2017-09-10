@@ -9,14 +9,6 @@ export const flow = {
             name: 'ready'
         },
         {
-            id: '1',
-            type: 'launchchrome',
-            options: {
-                port: 9222
-            },
-            name: 'init chrome headless'
-        },
-        {
             id: '2',
             type: 'transform',
             options: {
@@ -43,9 +35,9 @@ export const flow = {
             options: {
                 params: ['scripts'],
                 // code: 'return scripts.nodes.find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
-                code: 'return scripts.nodes.find(function (item) {return /jquery/.test(item.src)});'
+                code: 'return scripts.find(function (url) {return /jquery/.test(url)});'
             },
-            name: 'find b.js'
+            name: 'find jquery'
         },
         {
             id: '6',
@@ -58,13 +50,6 @@ export const flow = {
             type: 'link',
             fromId: '0',
             fromPort: 0,
-            toId: '1',
-            toPort: 0
-        },
-        {
-            type: 'link',
-            fromId: '1',
-            fromPort:0, 
             toId: '2',
             toPort: 0
         },

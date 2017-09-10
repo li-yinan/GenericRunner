@@ -26,23 +26,13 @@ export default class Dom extends Node {
         super.exec();
         let chrome = this.getService('chrome');
         let selector = this.options.selector;
-        let doc = await chrome.DOM.getDocument();
-        let doms = await chrome.DOM.querySelectorAll({
-            nodeId: doc.root.nodeId,
-            selector
-        });
-        let nodes = await Promise.all(doms.nodeIds.map(async nodeId => {
-            let ret = await chrome.DOM.getAttributes({nodeId});
-            // headless给的格式很奇葩
-            // 这里把['src', 'http://xxx', 'async', '']的格式转为
-            // {src: 'http://xxx', async: ''} 的格式
-            ret = zipObject.apply(this, zip.apply(this, chunk(ret.attributes, 2)));
-            ret.nodeId = nodeId;
-            return ret;
-        }));
-        return new ReturnValue(0, {
-            chrome,
-            nodes
-        }, this);
+        let nodes = await chrome.evaluate((selector) => {
+            var nodes = [].slice.call(document.querySelectorAll(selector));
+            return nodes.map(node => node.src);
+        }, selector);
+        // let nodes = await chrome.$$(selector);
+        // nodes.map(async node => await node.attribute('src'));
+        console.log('>>>1', nodes);
+        return new ReturnValue(0, nodes, this);
     }
 }
