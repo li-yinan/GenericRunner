@@ -19,7 +19,7 @@ export default class LaunchKoa extends Node {
 
     static declaration = {
         port: {
-            type: 'number'
+            type: 'string'
         }
     };
 
@@ -41,7 +41,7 @@ export default class LaunchKoa extends Node {
 
         let app = new Koa();
 
-        app.listen(port);
+        app.listen(port - 0);
 
         this.registerService('koa', app);
 
