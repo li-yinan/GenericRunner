@@ -368,6 +368,7 @@ export async function asyncFlowRunner(flow, pairs) {
                         if (node.out > 0) {
                             // 还有下一步，则把下一步添加到堆栈中
                             let pairs = getNextNodes(node, returnValue);
+                            // 为每一个node设置session
                             pairs.map(pair => {
                                 pair.setSession(node.getSession());
                             });
