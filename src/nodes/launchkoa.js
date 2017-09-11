@@ -16,6 +16,13 @@ export default class LaunchKoa extends Node {
     static type = 'launchkoa';
 
     static services = ['koa'];
+
+    static declaration = {
+        port: {
+            type: 'number'
+        }
+    };
+
     constructor(...args) {
         super(...args);
         // chromeInstance是为了运行时的，serialize的时候自然不需要被枚举

@@ -69,7 +69,13 @@ export async function getNodes() {
     let ret = {};
     let customPaths = customNodeSearchPaths.concat('../../../node_modules/');
     await Promise.all(customPaths.map(async customPath => {
-        let childFiles = await readDirP(join(__dirname, customPath));
+        let childFiles = [];
+        try {
+            childFiles = await readDirP(join(__dirname, customPath));
+        }
+        catch (e) {
+            console.log(e);
+        }
         await Promise.all(childFiles.map(async fileName => {
             if (/^[\.]/.test(fileName)) {
                 // 隐藏文件不管
