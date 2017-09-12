@@ -335,6 +335,11 @@ export async function asyncFlowRunner(flow, pairs) {
         let {data, port} = returnValue;
         // 从当前节点找到对应的端口所有的link
         let links = flow.links.filter(link => link.fromId === node.id && link.fromPort === port);
+
+        if (node.type === 'subflow') {
+            links = flow.links.filter(link => link.fromId === node.id);
+        }
+
         // 找到每个link对应的node
         return  links.map(link => {
             return {
@@ -411,7 +416,7 @@ export async function asyncFlowRunner(flow, pairs) {
 export function buildFlowFromConfig(conf) {
     try {
         return deserialize(JSON.stringify(conf));
-    } 
+    }
     catch (e) {
         console.log(e);
     }
