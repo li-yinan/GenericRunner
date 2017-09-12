@@ -40,6 +40,11 @@ export const flow = {
                     }
                 ],
                 outMap: [
+                    {
+                        type: 'link',
+                        fromId: '5',
+                        fromPort: 0
+                    }
                 ]
             },
             nodes: [
@@ -56,16 +61,11 @@ export const flow = {
                     type: 'transform',
                     options: {
                         params: ['scripts'],
-                        // code: 'return scripts.nodes.find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
-                        code: 'return scripts.nodes.find(function (item) {return /jquery/.test(item.src)});'
+                        // code: 'return scripts.find(function (item) {return /hm\\.baidu\\.com\\/hm\.js/.test(item.src)});'
+                        code: 'return scripts.find(function (item) {return /jquery/.test(item.src)});'
                     },
                     name: 'find b.js'
                 },
-                {
-                    id: '6',
-                    type: 'console',
-                    name: 'console result'
-                }
             ],
             links: [
                 {
@@ -74,15 +74,13 @@ export const flow = {
                     fromPort: 0,
                     toId: '5',
                     toPort: 0
-                },
-                {
-                    type: 'link',
-                    fromId: '5',
-                    fromPort: 0,
-                    toId: '6',
-                    toPort: 0
                 }
             ]
+        },
+        {
+            id: '8',
+            type: 'console',
+            name: 'console result'
         }
     ],
     links: [
@@ -112,6 +110,13 @@ export const flow = {
             fromId: '3',
             fromPort: 0,
             toId: '7',
+            toPort: 0
+        },
+        {
+            type: 'link',
+            fromId: '7',
+            fromPort: 0,
+            toId: '8',
             toPort: 0
         }
     ]
