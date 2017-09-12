@@ -53,6 +53,9 @@ export function getNodeClassByType(type) {
             break;
         }
     };
+    if (!node) {
+        throw `node: '${type}' not found`;
+    }
 
     if (node.default) {
         node = node.default;
@@ -94,6 +97,9 @@ export async function getNodes() {
                         return;
                     }
                     clazz = require(customPath + fileName);
+                }
+                if (!clazz) {
+                    throw `class: '${filename}' not found`;
                 }
                 if (clazz.default) {
                     clazz = clazz.default;
