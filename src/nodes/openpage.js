@@ -22,7 +22,7 @@ export default class OpenPage extends Node {
         let url = param;
         let client = await cri();
         this.registerService('chrome', client);
-        let {Page, Network, DOM} = client;
+        let {Page, Network, DOM, CSS} = client;
         // 记录请求，由于请求是事件的方式，每次新的事件到来都会给这个数组增加一项
         // 传递给下一个node的是这个数组的引用，直接读取就可以获取到已经产生的所有请求
         let networkCollection = [];
@@ -30,7 +30,7 @@ export default class OpenPage extends Node {
         Network.requestWillBeSent(params => {
             networkCollection.push(params);
         });
-        await Promise.all([DOM.enable(), Page.enable(), Network.enable()]);
+        await Promise.all([DOM.enable(), Page.enable(), Network.enable(), CSS.enable()]);
         await Page.navigate({url});
         await Page.loadEventFired();
         return new ReturnValue(0, null, this);
