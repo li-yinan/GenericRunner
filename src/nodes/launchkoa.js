@@ -55,11 +55,11 @@ export default class LaunchKoa extends Node {
      */
     async dispose() {
         await super.dispose();
-        // let koa = this.koa;
-        // return new Promise((resolve, reject) => {
-        //     koa.close(function () {
-        //         resolve();
-        //     });
-        // });
+        let koa = this.koa;
+        return new Promise((resolve, reject) => {
+            koa.close(function () {
+                resolve();
+            });
+        });
     }
 }
