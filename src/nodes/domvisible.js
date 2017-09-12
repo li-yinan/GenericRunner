@@ -16,16 +16,26 @@ export default class DomVisible extends Node {
 
     dep = ['chrome'];
 
-    async exec(nodes) {
+    async exec(nodes=[]) {
         super.exec(nodes);
         let chrome = this.getService('chrome');
-        let boxModels = nodes.map(node => {
-            let boxModel = await chrome.DOM.getBoxModel(node.nodeId);
-            return {
-                nodeId: node.nodeId,
-                boxModel
-            };
-        });
+        let boxModels = await Promise.all(nodes.map(async node => {
+            let nodeId = node.nodeId;
+            try {
+                // 能获得dom的boxmodel的是现实出来的元素，获得不到的是display：none的元素
+                let boxModel = await chrome.DOM.getBoxModel({nodeId});
+                return {
+                    nodeId,
+                    visible: true
+                };
+            }
+            catch (e) {
+                return {
+                    nodeId,
+                    visible: false
+                };
+            }
+        }));
         return new ReturnValue(0, boxModels, this);
     }
 }

@@ -40,9 +40,6 @@ export default class Dom extends Node {
             ret.nodeId = nodeId;
             return ret;
         }));
-        return new ReturnValue(0, {
-            chrome,
-            nodes
-        }, this);
+        return new ReturnValue(0, nodes, this);
     }
 }
