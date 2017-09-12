@@ -153,8 +153,7 @@ export function checkDep(flow) {
         // 找到当前节点的所有输出link
         return links.filter(link => link.fromId === node.id)
             // 利用link找到下一个node
-            .map(link => nodes.find(node => node.id === link.toId))
-            .filter(n => n.getSession().indexOf(node.getSession()));
+            .map(link => nodes.find(node => node.id === link.toId));
     }
     function walk(node) {
         // 检测当前node的依赖是否满足

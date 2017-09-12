@@ -17,11 +17,15 @@ export const flow = {
         },
         {
             id: '2',
-            type: 'openpage',
+            type: 'transform',
             options: {
-                // url: 'http://qiao.baidu.com/home/'
-                url: 'http://www.baidu.com'
+                code: `return 'http://www.baidu.com'`
             },
+            name: 'url'
+        },
+        {
+            id: '3',
+            type: 'openpage',
             name: 'open baidu'
         },
         {
@@ -99,6 +103,13 @@ export const flow = {
         {
             type: 'link',
             fromId: '2',
+            fromPort:0, 
+            toId: '3',
+            toPort: 0
+        },
+        {
+            type: 'link',
+            fromId: '3',
             fromPort: 0,
             toId: '7',
             toPort: 0
