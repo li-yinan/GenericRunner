@@ -41,6 +41,8 @@ export default class LaunchKoa extends Node {
 
         let app = new Koa();
 
+        this.koa = app;
+
         app.listen(port - 0);
 
         this.registerService('koa', app);
@@ -57,9 +59,14 @@ export default class LaunchKoa extends Node {
         await super.dispose();
         let koa = this.koa;
         return new Promise((resolve, reject) => {
-            koa.close(function () {
+            if (koa) {
+                koa.close(function () {
+                    resolve();
+                });
+            }
+            else {
                 resolve();
-            });
+            }
         });
     }
 }

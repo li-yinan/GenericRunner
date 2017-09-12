@@ -14,7 +14,8 @@ import {
 // import {flow} from './conf/interval';
 // import {flow} from './conf/thirdpart';
 // import {flow} from './conf/visible';
-import {flow} from './conf/exists';
+// import {flow} from './conf/exists';
+import {flow} from './conf/temp';
 
 async function main() {
     let flowInst = buildFlowFromConfig(flow);
