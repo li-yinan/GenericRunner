@@ -14,8 +14,6 @@ export default class Interval extends Node {
 
     static type = 'interval';
 
-    in = 0;
-
     async exec(param) {
         super.exec(param);
 
