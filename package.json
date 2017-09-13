@@ -1,6 +1,6 @@
 {
   "name": "genericrunner",
-  "version": "2.7.14",
+  "version": "2.7.15",
   "description": "A generic purpose task runner",
   "main": "lib/index.js",
   "scripts": {
