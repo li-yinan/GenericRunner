@@ -404,9 +404,9 @@ export async function asyncFlowRunner(flow, pairs) {
 
     let promises = pairs.map(({node,params}) => walk(node, params));
 
-    Promise.all(promises).then(function () {
-        flow.dispose();
-    });
+    // Promise.all(promises).then(function () {
+    //     flow.dispose();
+    // });
 
     // 并行对所有startNodes开始运行
     // 哪个快哪个就是最后的结果, 因为一个subflow的多个输出只有一个会被执行
