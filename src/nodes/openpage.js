@@ -17,10 +17,21 @@ export default class OpenPage extends Node {
     // 注册chrome的service
     static services = ['chrome'];
 
+    static declaration = {
+        port: {
+            type: 'number'
+        }
+    }
+
     async exec(param) {
         super.exec(param);
         let url = param;
-        let client = await cri();
+        let {
+            port = 9222
+        } = this.options;
+        let client = await cri({
+            port
+        });
         this.registerService('chrome', client);
         let {Page, Network, DOM, CSS} = client;
         // 记录请求，由于请求是事件的方式，每次新的事件到来都会给这个数组增加一项

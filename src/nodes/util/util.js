@@ -268,8 +268,8 @@ class Fifo {
     cache = [];
     index = {};
 
-    constructor({onpush}) {
-        this.onpush = onpush;
+    constructor(options = {}) {
+        this.onpush = options.onpush || function () {};
     }
 
     push(pair) {
