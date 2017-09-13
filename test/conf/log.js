@@ -49,8 +49,11 @@ export const flow = {
         },
         {
             id: '6',
-            type: 'console',
-            name: 'console result'
+            type: 'log',
+            options: {
+                layout: 'dummy'
+            },
+            name: 'log result'
         }
     ],
     links: [

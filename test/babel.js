@@ -16,7 +16,8 @@ import {
 // import {flow} from './conf/visible';
 // import {flow} from './conf/exists';
 // import {flow} from './conf/temp';
-import {flow} from './conf/timeout';
+// import {flow} from './conf/timeout';
+import {flow} from './conf/log';
 
 async function main() {
     let flowInst = buildFlowFromConfig(flow);
