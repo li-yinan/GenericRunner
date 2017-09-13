@@ -10,14 +10,14 @@ import {
 // import {flow} from './conf/getscript';
 // import {flow} from './conf/switch';
 // import {flow} from './conf/koa';
-import {flow} from './conf/subflow';
+// import {flow} from './conf/subflow';
 // import {flow} from './conf/interval';
 // import {flow} from './conf/thirdpart';
 // import {flow} from './conf/visible';
 // import {flow} from './conf/exists';
 // import {flow} from './conf/temp';
-// import {flow} from './conf/timeout';
-import {flow} from './conf/log';
+import {flow} from './conf/timeout';
+// import {flow} from './conf/log';
 
 async function main() {
     let flowInst = buildFlowFromConfig(flow);

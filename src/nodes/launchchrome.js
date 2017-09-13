@@ -41,7 +41,7 @@ export default class LaunchChrome extends Node {
         } = this.options;
 
         this.chromeInstance = await chromeLauncher.launch({
-            chromeFlags: ['--headless', '--disable-gpu'],
+            chromeFlags: ['--headless', '--disable-gpu', '--no-sandbox'],
             port
         });
 

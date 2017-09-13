@@ -11,12 +11,25 @@ export const flow = {
             id: '1',
             type: 'timeout',
             options: {
-                time: 5000
+                time: 1000
             },
             name: 'timeout'
         },
         {
             id: '2',
+            type: 'console',
+            name: 'console'
+        },
+        {
+            id: '3',
+            type: 'timeout',
+            options: {
+                time: 4000
+            },
+            name: 'timeout'
+        },
+        {
+            id: '4',
             type: 'console',
             name: 'console'
         }
@@ -38,30 +51,16 @@ export const flow = {
         },
         {
             type: 'link',
-            fromId: '2',
+            fromId: '0',
             fromPort: 0,
-            toId: '6',
+            toId: '3',
             toPort: 0
         },
         {
             type: 'link',
-            fromId: '4',
+            fromId: '3',
             fromPort: 0,
-            toId: '5',
-            toPort: 0
-        },
-        {
-            type: 'link',
-            fromId: '5',
-            fromPort: 0,
-            toId: '6',
-            toPort: 0
-        },
-        {
-            type: 'link',
-            fromId: '6',
-            fromPort: 0,
-            toId: '7',
+            toId: '4',
             toPort: 0
         }
     ]

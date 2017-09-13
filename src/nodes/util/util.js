@@ -5,7 +5,7 @@ import ContinuousOutput from './continuousoutput';
 import {sep, join} from 'path';
 import {readdir, stat} from 'fs';
 import pify from 'pify';
-import {merge, uniq, find, findIndex, difference} from 'lodash';
+import {filter, merge, uniq, find, findIndex, difference} from 'lodash';
 
 let readDirP = pify(readdir);
 let statP = pify(stat);
@@ -268,6 +268,10 @@ class Fifo {
     cache = [];
     index = {};
 
+    constructor({onpush}) {
+        this.onpush = onpush;
+    }
+
     push(pair) {
         let {node, params, port} = pair;
         if (this.index[node.id]) {
@@ -277,23 +281,20 @@ class Fifo {
             this.cache.push(pair);
             this.index[node.id] = pair;
         }
+        this.onpush();
     }
 
     shift() {
         this.cache.sort((a, b) => {return b.ready - a.ready});
-        let pair = this.cache.shift();
-        if (!pair) {
+        let pairs = this.cache.filter(item => item.ready);
+        this.cache = this.cache.filter(item => !item.ready);
+        if (!pairs.length) {
             return;
         }
-        if (!pair.ready) {
-            // 把这个节点放到最后
-            this.cache.push(pair);
-            // 这个情况在一个流程中某个node有多个输入时会出现
-            // 当一个流程运行到这样一个节点，但是这个节点的前置依赖并没有被放入队列里就会这样
-            return;
-        }
-        this.index[pair.node.id] = null;
-        return pair;
+        pairs.map(pair => {
+            this.index[pair.node.id] = null;
+        })
+        return pairs;
     }
 
     concat(arr) {
@@ -352,10 +353,7 @@ export async function asyncFlowRunner(flow, pairs) {
         nodes.push(new Pair(node, param));
         return new Promise(async (resolve, reject) => {
             try {
-                let pair = null;
-                let returnValue = null;
-                while (pair = nodes.shift()) {
-                    let {node, params} = pair;
+                async function execNode(node, params) {
                     // 传递service
                     // 只传递声明过的service
                     node.context.service = {};
@@ -387,6 +385,13 @@ export async function asyncFlowRunner(flow, pairs) {
                         }
                     }
                     // 没有下一步了，不用特殊处理，堆栈没了就都执行结束了
+                    return returnValue;
+                }
+
+                let pair = null;
+                let returnValue = null;
+                while (pairs = nodes.shift()) {
+                    await Promise.all(pairs.map(({node, params}) => execNode(node, params)));
                 }
                 resolve(returnValue);
             }
