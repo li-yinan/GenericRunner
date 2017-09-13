@@ -30,6 +30,12 @@ export default class SubFlow extends Flow {
         // 代表当id为xxx的node执行完，并且在这个node的port 1输出，则把这个结果映射到subflow的port 0(因为这个对象在outMap的第0个位置)
         // 不懂的问liyinan
        outMap: []
+    };
+
+    constructor(config) {
+        super(config);
+        this.in = inMap.length;
+        this.out = outMap.length;
     }
 
     buildDep() {
