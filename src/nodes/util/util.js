@@ -388,7 +388,7 @@ export async function asyncFlowRunner(flow, pairs) {
                     return returnValue;
                 }
 
-                let pair = null;
+                let pairs = null;
                 let returnValue = null;
                 while (pairs = nodes.shift()) {
                     await Promise.all(pairs.map(({node, params}) => execNode(node, params)));
@@ -402,7 +402,7 @@ export async function asyncFlowRunner(flow, pairs) {
         });
     }
 
-    let promises = pairs.map(({node,param}) => walk(node, param));
+    let promises = pairs.map(({node,params}) => walk(node, params));
 
     Promise.all(promises).then(function () {
         flow.dispose();

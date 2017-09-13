@@ -78,10 +78,26 @@ export const flow = {
             ]
         },
         {
-            id: '8',
-            type: 'console',
-            name: 'console result'
-        }
+            id: '10',
+            type: 'subflow',
+            options: {
+                inMap: [
+                    {
+                        type: 'link',
+                        toId: '14',
+                        toPort: 0
+                    }
+                ]
+            },
+            nodes: [
+                {
+                    id: '14',
+                    type: 'console',
+                    name: 'console result'
+                },
+            ],
+            links: []
+        },
     ],
     links: [
         {
@@ -116,7 +132,7 @@ export const flow = {
             type: 'link',
             fromId: '7',
             fromPort: 0,
-            toId: '8',
+            toId: '10',
             toPort: 0
         }
     ]
