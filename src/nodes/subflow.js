@@ -34,6 +34,10 @@ export default class SubFlow extends Flow {
 
     constructor(config) {
         super(config);
+        let {
+            inMap,
+            outMap
+        } = config.options;
         this.in = inMap.length;
         this.out = outMap.length;
     }
