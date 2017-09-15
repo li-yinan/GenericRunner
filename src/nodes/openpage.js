@@ -32,6 +32,7 @@ export default class OpenPage extends Node {
         let client = await cri({
             port
         });
+        this.client = client;
         this.registerService('chrome', client);
         let {Page, Network, DOM, CSS} = client;
         // 记录请求，由于请求是事件的方式，每次新的事件到来都会给这个数组增加一项
@@ -45,5 +46,10 @@ export default class OpenPage extends Node {
         await Page.navigate({url});
         await Page.loadEventFired();
         return new ReturnValue(0, null, this);
+    }
+
+    async dispose() {
+        await super.dispose();
+        return this.client && this.client.close();
     }
 }

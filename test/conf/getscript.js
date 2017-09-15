@@ -49,6 +49,11 @@ export const flow = {
         },
         {
             id: '6',
+            type: 'closepage',
+            name: 'close page'
+        },
+        {
+            id: '7',
             type: 'console',
             name: 'console result'
         }
