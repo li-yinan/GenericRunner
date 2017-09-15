@@ -43,7 +43,7 @@ export default class LaunchKoa extends Node {
 
         this.koa = app;
 
-        app.listen(port - 0);
+        this.server = app.listen(port - 0);
 
         this.registerService('koa', app);
 
@@ -57,10 +57,10 @@ export default class LaunchKoa extends Node {
      */
     async dispose() {
         await super.dispose();
-        let koa = this.koa;
+        let server = this.server;
         return new Promise((resolve, reject) => {
-            if (koa) {
-                koa.close(function () {
+            if (server) {
+                server.close(function () {
                     resolve();
                 });
             }
