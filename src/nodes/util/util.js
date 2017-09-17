@@ -210,7 +210,7 @@ function createInstance(config) {
  */
 export function deserialize(configStr) {
     let flow = JSON.parse(configStr, function (key, value) {
-        if (value.type) {
+        if (value.type && value.id !== undefined) {
             return createInstance(value);
         }
         return value;

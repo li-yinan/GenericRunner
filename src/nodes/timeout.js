@@ -24,10 +24,8 @@ export default class Interval extends Node {
         } = this.options;
 
         return new Promise(function (resolve) {
-            console.log('>>>1');
             setTimeout(function () {
-            console.log('>>>2');
-                resolve(new ReturnValue(0, null, node));
+                resolve(new ReturnValue(0, param, node));
             }, time);
         });
     }

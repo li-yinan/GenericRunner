@@ -31,7 +31,9 @@
     "mkdirp": "^0.5.1",
     "pify": "^3.0.0",
     "puppeteer": "^0.10.2",
-    "shelljs": "^0.7.8"
+    "reqwest": "^2.0.5",
+    "shelljs": "^0.7.8",
+    "xhr2": "^0.1.4"
   },
   "author": "liyinan",
   "license": "MIT"

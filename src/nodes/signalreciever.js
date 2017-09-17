@@ -1,5 +1,5 @@
 /**
- * @file launch chrome node 用于启动headless chrome的node
+ * @file SignalReciever node 用于接收信号，保证流程用
  * 
  * @author liyinan
  * @version 1.0
@@ -32,7 +32,6 @@ export default class SignalReciever extends Node {
         let continuousOutput = new ContinuousOutput();
         let emitter = this.context.flow.signal;
         emitter.on(name, () => {
-            console.log('hello');
             continuousOutput.output(new ReturnValue(0, param, node));
         });
 
