@@ -1,3 +1,14 @@
+## 2.8.2
+
+### 增加了重要的signal机制，可以用于控制流程了
+以signal为基础，增加了signalreciever、signalsender、pager节点
+应业务需要，增加了request节点
+
+## 2.8.0
+
+### 修改了无数bug之后，增加了domexists,domvisible等node
+2.7的版本号太多了，就发了2.8，我诚恳不？
+
 ## 2.7.0
 
 ### 增加了对并发的控制
