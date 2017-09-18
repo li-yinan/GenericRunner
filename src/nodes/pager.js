@@ -48,6 +48,8 @@ export default class Pager extends Node {
         let flow = this.context.flow;
 
         let total = Infinity;
+        let emitter = this.context.flow.signal;
+        let ptr = null;
 
         async function request() {
             if (page_num * page_size < total) {
@@ -73,6 +75,7 @@ export default class Pager extends Node {
             else {
                 // 已经处理完所有内容
                 emitter.removeListener(name, callback);
+                clearTimeout(ptr);
             }
         }
 
@@ -88,9 +91,7 @@ export default class Pager extends Node {
 
         flow.signal = flow.signal || new EventEmitter();
         let continuousOutput = new ContinuousOutput();
-        let emitter = this.context.flow.signal;
 
-        let ptr = null;
         const callback = async () => {
             clearTimeout(ptr);
             // 超时就执行一次，获取更多的结果
