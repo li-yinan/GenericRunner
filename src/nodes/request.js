@@ -20,8 +20,8 @@ export default class Request extends Node {
         }
     };
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
 
         let {
             url

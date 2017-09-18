@@ -1,6 +1,6 @@
 /**
  * @file transform node 用于对数据进行转换的node
- * 
+ *
  * @author liyinan
  * @version 1.0
  * @date 2017-07-23
@@ -22,10 +22,10 @@ export default class Transform extends Node{
         }
     };
 
-    async exec(param) {
+    async exec(param, context) {
+        super.exec(param, context);
         let code = this.options.code;
         let params = this.options.params;
-        super.exec(param);
         let ret;
         try {
             if (params && params.length) {

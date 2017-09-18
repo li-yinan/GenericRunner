@@ -32,8 +32,8 @@ export default class LaunchChrome extends Node {
         })
     }
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
         let {
             // mac下的默认地址
             // chromePath = '/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome',

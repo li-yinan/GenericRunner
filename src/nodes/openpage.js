@@ -23,8 +23,8 @@ export default class OpenPage extends Node {
         }
     }
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
         let url = param;
         let {
             port = 9222
@@ -33,7 +33,7 @@ export default class OpenPage extends Node {
             port
         });
         this.client = client;
-        this.registerService('chrome', client);
+        context.registerService('chrome', client);
         let {Page, Network, DOM, CSS} = client;
         // 记录请求，由于请求是事件的方式，每次新的事件到来都会给这个数组增加一项
         // 传递给下一个node的是这个数组的引用，直接读取就可以获取到已经产生的所有请求

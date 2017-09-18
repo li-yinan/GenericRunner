@@ -16,9 +16,9 @@ export default class DomVisible extends Node {
 
     dep = ['chrome'];
 
-    async exec(nodes=[]) {
-        super.exec(nodes);
-        let chrome = this.getService('chrome');
+    async exec(nodes=[], context) {
+        super.exec(nodes, context);
+        let chrome = context.getService('chrome');
         let styles = await Promise.all(nodes.map(async node => {
             let nodeId = node.nodeId;
             let ret = await chrome.CSS.getComputedStyleForNode({nodeId});

@@ -29,7 +29,8 @@ export default class Merge extends Node {
     }
 
     async exec(...args) {
-        super.exec(...args);
+        let context = args.pop();
+        super.exec(...args, context);
         let keys = this.options.keys;
         let ret = zipObject(keys, args)
         return new ReturnValue(0, ret, this);

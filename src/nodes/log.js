@@ -17,8 +17,8 @@ export default class Log extends Node {
 
     out = 0;
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
 
         let node = this;
 

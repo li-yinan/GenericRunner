@@ -15,8 +15,8 @@ export default class Console extends Node {
 
     out = 0;
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
         console.log(param);
         return new ReturnValue(0, null, this);
     }

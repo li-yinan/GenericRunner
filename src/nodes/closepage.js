@@ -15,9 +15,9 @@ export default class ClosePage extends Node {
 
     dep = ['chrome'];
 
-    async exec(param) {
-        super.exec(param);
-        let chrome = this.getService('chrome');
+    async exec(param, context) {
+        super.exec(param, context);
+        let chrome = context.getService('chrome');
         await chrome.close();
         return new ReturnValue(0, param, this);
     }

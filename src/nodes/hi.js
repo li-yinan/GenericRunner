@@ -21,8 +21,8 @@ export default class Hi extends Node {
 
     dep = ['koa'];
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
 
         let node = this;
 
@@ -30,10 +30,10 @@ export default class Hi extends Node {
 
         let path = this.options.path;
 
-        let koa = this.getService('koa');
+        let koa = context.getService('koa');
 
         router.all(path, (ctx, next) => {
-            node.registerService('httprequest', ctx);
+            context.registerService('httprequest', ctx);
             continuousOutput.output(new ReturnValue(0, null, node));
             ctx.body = 'Hello Koa';
         });

@@ -83,31 +83,13 @@ export default class Executable {
         return this.context.session;
     }
 
-    registerService(key, value) {
-        let services = this.constructor.services;
-        // 验证要注册的key是否是声明过的
-        if (services.indexOf(key) !== -1) {
-            // 调用flow的注册，把服务记录到flow上
-            // 然后在运行时再从flow复制回node
-            // 这样可以防止未被注册的服务到处传递引起混乱
-            this.context.flow.registerService(key, value);
-        }
-    }
-
-    getService(name) {
-        let service = this.context.service[name];
-        if (service) {
-            return service;
-        }
-        throw `you have to specific declare service '${name}'`;
-    }
-
     /**
      * 执行node，默认实现只trace当前执行，子类需调用父类方法，然后实现子类操作
      *
      * @param param
      */
     async exec(...args) {
+        args.pop();
         this.trace('exec: ', ...args);
     }
 

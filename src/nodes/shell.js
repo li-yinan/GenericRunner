@@ -20,8 +20,8 @@ export default class Shell extends Node {
         }
     };
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
         let {cmd} = this.options;
         let ret = shell.exec(cmd);
         return new ReturnValue(0, ret, this);

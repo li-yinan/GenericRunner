@@ -6,6 +6,7 @@ import {sep, join} from 'path';
 import {readdir, stat} from 'fs';
 import pify from 'pify';
 import {filter, merge, uniq, find, findIndex, difference} from 'lodash';
+import Context from './context';
 
 let readDirP = pify(readdir);
 let statP = pify(stat);
@@ -238,13 +239,19 @@ export class Pair {
     count = 0;
     ready = false;
     port = 0;
-    constructor(node, param, port = 0) {
+    context = null;
+    constructor(node, param, port = 0, context) {
         if (node.in === 0) {
             this.ready = true;
         }
         this.node = node;
         this.port = port;
         this.addParam(param, port);
+        this.setContext(context);
+    }
+
+    setContext(context) {
+        this.context = context;
     }
 
     addParam(param, port = 0) {
@@ -318,21 +325,23 @@ class Fifo {
 export async function asyncFlowRunner(flow, pairs) {
 
     let nodes = new Fifo();
+    let context = new Context();
 
     // 把所有属于当前flow的node的context设置为属于当前flow
     flow.nodes.map(node => node.context.flow = flow);
+
     // 找到所有初始节点，初始节点就是in的数量是0的节点
     let startNodes = flow.nodes.filter(node => node.in === 0);
+    let startPairs = startNodes.map(node => new Pair(node, null, 0, context.clone()));
     if (pairs) {
         // 如果给出初始运行节点，找到当前flow里的自运行节点，合并在一起作为初始运行节点
-        pairs = pairs.concat(startNodes.map(node => new Pair(node)));
+        pairs = pairs.concat(startPairs);
     }
     else {
-        // 没有给出初始运行节点
-        pairs = startNodes.map(node => new Pair(node));
+        pairs = startPairs;
     }
 
-    function getNextNodes(node, returnValue) {
+    function getNextNodes(node, returnValue, context) {
         let {data, port} = returnValue;
         // 从当前节点找到对应的端口所有的link
         let links = flow.links.filter(link => link.fromId === node.id && link.fromPort === port);
@@ -345,23 +354,17 @@ export async function asyncFlowRunner(flow, pairs) {
                 port: link.toPort
             }
         })
-        .map(obj => new Pair(obj.node, data, obj.port));
+        .map(obj => new Pair(obj.node, data, obj.port, context.clone()));
     }
 
     let cnt = 0;
-    async function walk(node, param) {
-        nodes.push(new Pair(node, param));
+    async function walk(node, param, context) {
+        nodes.push(new Pair(node, param, 0, context.clone()));
         return new Promise(async (resolve, reject) => {
             try {
-                async function execNode(node, params) {
-                    // 传递service
-                    // 只传递声明过的service
-                    node.context.service = {};
-                    node.dep.map(key => {
-                        node.context.service[key] =  flow.context.service[key];
-                    });
+                async function execNode(node, params, context) {
                     // 执行node
-                    let ret = await node.exec.apply(node, params);
+                    let ret = await node.exec.apply(node, params.concat(context));
                     if (ret instanceof ContinuousOutput) {
                         // 当前node的返回值是一个持续输出类型
                         // 注册事件，接收持续产生的输出
@@ -369,14 +372,14 @@ export async function asyncFlowRunner(flow, pairs) {
                             // 回调的参数是一个VirtualNode
                             // 用于仿造一个node，放到堆栈里，
                             vnode.setSession(node.getSession() + '_' + cnt++);
-                            walk(vnode);
+                            walk(vnode, null, context);
                         });
 
                     } else {
                         returnValue = ret;
                         if (node.out > 0) {
                             // 还有下一步，则把下一步添加到堆栈中
-                            let pairs = getNextNodes(node, returnValue);
+                            let pairs = getNextNodes(node, returnValue, context);
                             // 为每一个node设置session
                             pairs.map(pair => {
                                 pair.setSession(node.getSession());
@@ -391,7 +394,7 @@ export async function asyncFlowRunner(flow, pairs) {
                 let pairs = null;
                 let returnValue = null;
                 while (pairs = nodes.shift()) {
-                    await Promise.all(pairs.map(({node, params}) => execNode(node, params)));
+                    await Promise.all(pairs.map(({node, params, context}) => execNode(node, params, context)));
                 }
                 resolve(returnValue);
             }
@@ -402,7 +405,7 @@ export async function asyncFlowRunner(flow, pairs) {
         });
     }
 
-    let promises = pairs.map(({node,params}) => walk(node, params));
+    let promises = pairs.map(({node,params}) => walk(node, params, context.clone()));
 
     // Promise.all(promises).then(function () {
     //     flow.dispose();

@@ -21,8 +21,8 @@ export default class SignalReciever extends Node {
         }
     };
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
         let {
             name
         } = this.options;

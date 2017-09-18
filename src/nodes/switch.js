@@ -26,11 +26,11 @@ export default class Transform extends Node{
         this.out = config.options.conditions.length;
     }
 
-    async exec(param) {
+    async exec(param, context) {
+        super.exec(param, context);
         let conditions = this.options.conditions || [];
         let params = this.options.params || [];
         let code = '';
-        super.exec(param);
         let toPort;
         try {
             if (params.length) {

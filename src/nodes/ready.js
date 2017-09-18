@@ -15,8 +15,8 @@ export default class Ready extends Node {
 
     in = 0;
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
         return new ReturnValue(0, null, this);
     }
 }

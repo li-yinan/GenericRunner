@@ -21,9 +21,9 @@ export default class DomExists extends Node {
         }
     }
 
-    async exec() {
-        super.exec();
-        let chrome = this.getService('chrome');
+    async exec(param, context) {
+        super.exec(param, context);
+        let chrome = context.getService('chrome');
         let selector = this.options.selector;
         let doc = await chrome.DOM.getDocument();
         let {nodeId} = await chrome.DOM.querySelector({

@@ -14,8 +14,8 @@ export default class Interval extends Node {
 
     static type = 'timeout';
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
 
         let node = this;
 

@@ -34,8 +34,8 @@ export default class Pager extends Node {
         }
     };
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
         let list = [];
         let {
             url,

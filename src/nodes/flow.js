@@ -22,15 +22,11 @@ export default class Flow extends Executable {
         service: {}
     };
 
-    registerService(key, value) {
-        this.context.service[key] = value;
-    }
-
     checkDep() {
     }
 
-    async exec(param) {
-        await super.exec(param);
+    async exec(param, context) {
+        await super.exec(param, context);
         return asyncFlowRunner(this);
     }
 

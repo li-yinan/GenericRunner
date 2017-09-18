@@ -32,8 +32,8 @@ export default class LaunchKoa extends Node {
         });
     }
 
-    async exec(param) {
-        super.exec(param);
+    async exec(param, context) {
+        super.exec(param, context);
 
         let {
             port = 3000
@@ -45,7 +45,7 @@ export default class LaunchKoa extends Node {
 
         this.server = app.listen(port - 0);
 
-        this.registerService('koa', app);
+        context.registerService('koa', app);
 
         return new ReturnValue(0, null, this);
     }
