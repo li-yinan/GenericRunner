@@ -16,7 +16,7 @@ export default class Context {
         if (service) {
             return service;
         }
-        throw `you have to specific declare service '${name}'`;
+        throw `you have to specific declare service '${key}'`;
     }
 
     clone() {

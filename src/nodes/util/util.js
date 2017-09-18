@@ -322,10 +322,10 @@ class Fifo {
  *
  * @return {Promise}
  */
-export async function asyncFlowRunner(flow, pairs) {
+export async function asyncFlowRunner(flow, pairs, context) {
 
     let nodes = new Fifo();
-    let context = new Context();
+    context = context || new Context();
 
     // 把所有属于当前flow的node的context设置为属于当前flow
     flow.nodes.map(node => node.context.flow = flow);

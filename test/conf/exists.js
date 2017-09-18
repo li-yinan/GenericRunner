@@ -20,7 +20,7 @@ export const flow = {
             id: '2',
             type: 'transform',
             options: {
-                code: `return 'http://localhost:8848'`
+                code: `return 'http://www.baidu.com'`
             },
             name: 'test page'
         },

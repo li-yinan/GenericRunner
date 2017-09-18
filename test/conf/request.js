@@ -20,9 +20,14 @@ export const flow = {
             id: '2',
             type: 'request',
             options: {
-                url: 'http://localhost:8848'
+                url: 'http://www.baidu.com'
             },
             name: 'request'
+        },
+        {
+            id: '3',
+            type: 'console',
+            name: 'console'
         }
     ],
     links: [
@@ -36,8 +41,15 @@ export const flow = {
         {
             type: 'link',
             fromId: '1',
-            fromPort:0, 
+            fromPort:0,
             toId: '2',
+            toPort: 0
+        },
+        {
+            type: 'link',
+            fromId: '2',
+            fromPort:0,
+            toId: '3',
             toPort: 0
         }
     ]

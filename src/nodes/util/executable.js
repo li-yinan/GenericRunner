@@ -89,7 +89,7 @@ export default class Executable {
      * @param param
      */
     async exec(...args) {
-        args.pop();
+        let context = args.pop();
         this.trace('exec: ', ...args);
     }
 

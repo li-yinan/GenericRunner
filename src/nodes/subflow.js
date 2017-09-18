@@ -53,7 +53,8 @@ export default class SubFlow extends Flow {
     }
 
     async exec(...args) {
-        this.trace('exec', ...args);
+        let context = args.pop();
+        this.trace('exec: ', ...args);
 
         let {
             inMap,
@@ -61,9 +62,9 @@ export default class SubFlow extends Flow {
         } = this.options;
 
         // 找到subflow的输入应该映射到内部的哪个node的哪个port，以此来确定subflow初始执行的节点
-        let pairs = inMap.map((portMap, index) => new Pair(this.getNodeById(portMap.toId), args[index], portMap.toPort));
+        let pairs = inMap.map((portMap, index) => new Pair(this.getNodeById(portMap.toId), args[index], portMap.toPort, context.clone()));
         // 执行subflow
-        let {port, data, node} = await asyncFlowRunner(this, pairs);
+        let {port, data, node} = await asyncFlowRunner(this, pairs, context);
         // 找到当前执行结果应该映射到subflow 输出的哪个端口
         let outPort = outMap.findIndex(portMap => portMap.fromId === node.id && portMap.fromPort === port);
         return new ReturnValue(outPort, data, this);

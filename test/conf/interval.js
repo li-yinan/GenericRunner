@@ -4,6 +4,11 @@ export const flow = {
     nodes: [
         {
             id: '0',
+            type: 'ready',
+            name: 'ready'
+        },
+        {
+            id: '1',
             type: 'interval',
             options: {
                 duration: 2000
@@ -11,7 +16,7 @@ export const flow = {
             name: 'interval'
         },
         {
-            id: '1',
+            id: '2',
             type: 'console',
             name: 'console'
         }
