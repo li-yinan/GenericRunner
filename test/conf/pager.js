@@ -28,6 +28,7 @@ export const flow = {
             type: 'pager',
             options: {
                 name: 'test',
+                timeout: 3000,
                 url: 'http://xbug.test.com:8812/cambrian/mip_url_list',
                 data: {
                     ds: '20170911',

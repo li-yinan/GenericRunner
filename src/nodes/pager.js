@@ -42,6 +42,7 @@ export default class Pager extends Node {
             name,
             page_num = 1, // 起始页码
             page_size = 20,
+            timeout = 30000, // 30秒超时
             data
         } = this.options;
         let flow = this.context.flow;
@@ -66,7 +67,12 @@ export default class Pager extends Node {
                     }
                 }
                 catch (e) {
+                    console.log(`get data failed, url: ${url}, data: ${JSON.stringify(data)}`);
                 }
+            }
+            else {
+                // 已经处理完所有内容
+                emitter.removeListener(name, callback);
             }
         }
 
@@ -84,9 +90,21 @@ export default class Pager extends Node {
         let continuousOutput = new ContinuousOutput();
         let emitter = this.context.flow.signal;
 
-        emitter.on(name, async () => {
-            continuousOutput.output(new ReturnValue(0, await getOne(), this));
-        });
+        let ptr = null;
+        const callback = async () => {
+            clearTimeout(ptr);
+            // 超时就执行一次，获取更多的结果
+            ptr = setTimeout(function () {
+                callback();
+            }, timeout);
+            // 如果没有得到结果，就是没有更多数据了
+            let ret = await getOne();
+            if (ret) {
+                continuousOutput.output(new ReturnValue(0, ret, this));
+            }
+        }
+
+        emitter.on(name, callback);
 
         return continuousOutput;
     }
