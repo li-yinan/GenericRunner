@@ -1,4 +1,4 @@
-import {cloneDeep, assign} from 'lodash';
+import {cloneDeep, assign, merge} from 'lodash';
 export default class Context {
 
     service = {};
@@ -24,5 +24,9 @@ export default class Context {
         instance = assign(instance, this);
         instance.service = assign({}, instance.service);
         return instance;
+    }
+
+    merge(context) {
+        return merge(this, context);
     }
 }

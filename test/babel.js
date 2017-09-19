@@ -16,11 +16,11 @@ import {
 // import {flow} from './conf/thirdpart';
 // import {flow} from './conf/visible';
 // import {flow} from './conf/exists';
-// import {flow} from './conf/temp';
+import {flow} from './conf/temp';
 // import {flow} from './conf/timeout';
 // import {flow} from './conf/log';
 // import {flow} from './conf/pager';
-import {flow} from './conf/request';
+// import {flow} from './conf/request';
 
 async function main() {
     let flowInst = buildFlowFromConfig(flow);

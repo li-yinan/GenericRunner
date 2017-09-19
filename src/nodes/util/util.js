@@ -251,7 +251,12 @@ export class Pair {
     }
 
     setContext(context) {
-        this.context = context;
+        if (this.context) {
+            this.context = this.context.merge(context);
+        }
+        else {
+            this.context = context;
+        }
     }
 
     addParam(param, port = 0) {
@@ -280,9 +285,10 @@ class Fifo {
     }
 
     push(pair) {
-        let {node, params, port} = pair;
+        let {node, params, port, context} = pair;
         if (this.index[node.id]) {
             this.index[node.id].addParam(params[port], port);
+            this.index[node.id].setContext(context);
         }
         else {
             this.cache.push(pair);
