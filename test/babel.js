@@ -7,7 +7,7 @@ import {
     buildFlowFromConfig
 } from '../src/index';
 
-import {flow} from './conf/getscript';
+// import {flow} from './conf/getscript';
 // import {flow} from './conf/signal';
 // import {flow} from './conf/switch';
 // import {flow} from './conf/koa';
@@ -21,6 +21,7 @@ import {flow} from './conf/getscript';
 // import {flow} from './conf/log';
 // import {flow} from './conf/pager';
 // import {flow} from './conf/request';
+import {flow} from './conf/retry';
 
 async function main() {
     let flowInst = buildFlowFromConfig(flow);
