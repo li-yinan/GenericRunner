@@ -31,8 +31,8 @@ export default class SignalReciever extends Node {
         flow.signal = flow.signal || new EventEmitter();
         let continuousOutput = new ContinuousOutput();
         let emitter = this.context.flow.signal;
-        emitter.on(name, () => {
-            continuousOutput.output(new ReturnValue(0, param, node));
+        emitter.on(name, data => {
+            continuousOutput.output(new ReturnValue(0, data, node));
         });
 
         return continuousOutput;
