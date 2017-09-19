@@ -7,7 +7,7 @@ import {
     buildFlowFromConfig
 } from '../src/index';
 
-// import {flow} from './conf/getscript';
+import {flow} from './conf/getscript';
 // import {flow} from './conf/signal';
 // import {flow} from './conf/switch';
 // import {flow} from './conf/koa';
@@ -16,7 +16,7 @@ import {
 // import {flow} from './conf/thirdpart';
 // import {flow} from './conf/visible';
 // import {flow} from './conf/exists';
-import {flow} from './conf/temp';
+// import {flow} from './conf/temp';
 // import {flow} from './conf/timeout';
 // import {flow} from './conf/log';
 // import {flow} from './conf/pager';
