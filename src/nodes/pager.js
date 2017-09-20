@@ -42,6 +42,7 @@ export default class Pager extends Node {
             name,
             page_num = 1, // 起始页码
             page_size = 20,
+            neverstop = true,
             timeout = 30000, // 30秒超时
             data
         } = this.options;
@@ -73,7 +74,7 @@ export default class Pager extends Node {
                     console.log(`get data failed, url: ${url}, data: ${JSON.stringify(data)}`);
                 }
             }
-            else {
+            else if (!neverstop) {
                 // 已经处理完所有内容
                 emitter.removeListener(name, callback);
                 clearTimeout(ptr);
