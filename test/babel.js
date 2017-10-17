@@ -21,7 +21,8 @@ import {
 // import {flow} from './conf/log';
 // import {flow} from './conf/pager';
 // import {flow} from './conf/request';
-import {flow} from './conf/retry';
+import {flow} from './conf/http';
+// import {flow} from './conf/retry';
 
 async function main() {
     let flowInst = buildFlowFromConfig(flow);

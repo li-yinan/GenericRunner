@@ -9,6 +9,7 @@
 import Node from './util/node';
 import ReturnValue from './util/returnvalue';
 import Koa from 'koa';
+import bodyParser from 'koa-bodyparser';
 import http from 'http';
 
 export default class LaunchKoa extends Node {
@@ -40,10 +41,11 @@ export default class LaunchKoa extends Node {
         } = this.options;
 
         let app = new Koa();
+        app.use(bodyParser());
 
-        this.koa = app;
 
-        this.server = app.listen(port - 0);
+        this.server = http.createServer(app.callback());
+        this.server.listen(port - 0);
 
         context.registerService('koa', app);
 
