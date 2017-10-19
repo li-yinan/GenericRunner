@@ -11,7 +11,6 @@ import ReturnValue from './util/returnvalue';
 import ContinuousOutput from './util/continuousoutput';
 import Router from 'koa-router';
 
-let router = Router();
 
 export default class HttpInput extends Node {
 
@@ -32,6 +31,8 @@ export default class HttpInput extends Node {
 
         let koa = context.getService('koa');
 
+        let router = Router();
+
         router.all(path, async (ctx, next) => {
             return new Promise(resolve => {
                 // 注册一个function
@@ -48,6 +49,7 @@ export default class HttpInput extends Node {
             });
         });
 
+        console.log('>>>>router<<<<', router);
         koa.use(router.routes(), router.allowedMethods());
 
         // return new ReturnValue(0, null, this);

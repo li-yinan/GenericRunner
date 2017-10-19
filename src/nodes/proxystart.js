@@ -24,7 +24,7 @@ export default class ProxyStart extends Node {
         super.exec(param, context);
 
         let {
-            port = 8081;
+            port = 8081
         } = this.options;
 
         await exec('-setwebproxy', 'Wi-Fi', '127.0.0.1', port);
