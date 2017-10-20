@@ -264,6 +264,7 @@ export function scopeMatch(context1, context2) {
 export class Pair {
     node = null;
     params = [];
+    paramsFill = [];
     count = 0;
     ready = false;
     port = 0;
@@ -289,8 +290,10 @@ export class Pair {
 
     addParam(param, port = 0) {
         this.params[port] = param;
+        this.paramsFill[port] = true;
         this.count++;
-        if (this.node.in === this.count) {
+        let paramsCount = this.paramsFill.filter(param => param);
+        if (this.node.in === paramsCount.length) {
             this.ready = true;
         }
     }
