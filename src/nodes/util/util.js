@@ -404,6 +404,12 @@ export async function asyncFlowRunner(flow, pairs, context) {
                         });
 
                     } else {
+                        try {
+                            console.log('>>>node return<<<', JSON.stringify(ret));
+                        }
+                        catch (e) {
+                            console.log('>>>node return<<<结果无法stringify');
+                        }
                         returnValue = ret;
                         if (node.out > 0) {
                             // 还有下一步，则把下一步添加到堆栈中
