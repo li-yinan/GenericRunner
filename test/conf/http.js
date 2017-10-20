@@ -39,6 +39,14 @@ export const flow = {
             name: 'console'
         },
         {
+            id: 'timeout',
+            type: 'timeout',
+            name: 'timeout',
+            options: {
+                time: 10000
+            }
+        },
+        {
             id: 'httpoutput',
             type: 'httpoutput',
             options: {
@@ -76,6 +84,13 @@ export const flow = {
         {
             type: 'link',
             fromId: 'getbody',
+            fromPort: 0,
+            toId: 'timeout',
+            toPort: 0
+        },
+        {
+            type: 'link',
+            fromId: 'timeout',
             fromPort: 0,
             toId: 'httpoutput',
             toPort: 0

@@ -11,6 +11,7 @@
 
 import Node from './node';
 import {merge} from 'lodash';
+import Context from './context';
 
 class VirtualNode extends Node {
 
@@ -27,7 +28,13 @@ class VirtualNode extends Node {
         let exec = this.exec;
         merge(this, originNode);
         // 还原exec方法
-        this.exec = exec;
+        this.exec = (...args) => {
+            let context = args[args.length - 1];
+            if (context instanceof Context) {
+                context.newScope();
+            }
+            return exec.call(this, ...args);
+        };
         // 改改名字吧，不然都分不清是真的node还是virtual node
         this.name = 'virtual node ' + this.name;
         this.returnValue = returnValue;

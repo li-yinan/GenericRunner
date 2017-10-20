@@ -12,7 +12,6 @@ export default class Executable {
     name = 'executable';
 
     context = {
-        session: 's'
     };
 
     // TODO
@@ -73,14 +72,6 @@ export default class Executable {
             writable: true,
             value: this.dep
         });
-    }
-
-    setSession(session) {
-        this.context.session = session;
-    }
-
-    getSession() {
-        return this.context.session;
     }
 
     /**

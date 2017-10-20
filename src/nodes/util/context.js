@@ -1,10 +1,17 @@
 import {cloneDeep, assign, merge} from 'lodash';
+let cnt = 1;
 export default class Context {
 
     service = {};
 
+    scope = 's';
+
     constructor() {
         this.id = +new Date();
+    }
+
+    newScope() {
+        this.scope = this.scope + '_' + cnt++;
     }
 
     registerService(key, value) {

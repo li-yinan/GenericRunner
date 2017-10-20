@@ -231,6 +231,34 @@ export function equal(node1, node2) {
 }
 
 /**
+ * 判断scope是否match，scope是以s开头的字符串，比如s_1, s_2, s_3_1 等
+ * 每次一个sub scope就在前一个scope后面加一个新的数字
+ * 而另一个无关的scope就把当前数字增加，比如s_1 => s_2
+ * match的条件就是短的跟长的前几位完全一致，比如s_1和s_1_2match，但是s_1和s_2就不match
+ *
+ * @param {Context} context1
+ * @param {Context} context2
+ *
+ * @return {Boolean}
+*/
+export function scopeMatch(context1, context2) {
+    let scope1 = context1.scope;
+    let scope2 = context2.scope;
+    if (scope1 === scope2) {
+        return true;
+    }
+    let longOne = scope1.length > scope2.length ? scope1 : scope2;
+    let shortOne = scope1.length < scope2.length ? scope1 : scope2;
+
+    if (longOne.indexOf(shortOne) === 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+/**
  * 用于生成一个node，和运行node需要的参数的pair，作为中间态存储即将运行的node
  */
 export class Pair {
@@ -270,15 +298,10 @@ export class Pair {
     setData(data) {
         this.data = data;
     }
-
-    setSession(session) {
-        this.node.setSession(session);
-    }
 }
 
 class Fifo {
     cache = [];
-    index = {};
 
     constructor(options = {}) {
         this.onpush = options.onpush || function () {};
@@ -286,13 +309,13 @@ class Fifo {
 
     push(pair) {
         let {node, params, port, context} = pair;
-        if (this.index[node.id]) {
-            this.index[node.id].addParam(params[port], port);
-            this.index[node.id].setContext(context);
+        let indexedNode = this.cache.find(cachedPair => cachedPair.node.id === node.id && scopeMatch(context, cachedPair.context));
+        if (indexedNode) {
+            indexedNode.addParam(params[port], port);
+            indexedNode.setContext(context);
         }
         else {
             this.cache.push(pair);
-            this.index[node.id] = pair;
         }
         this.onpush();
     }
@@ -304,9 +327,6 @@ class Fifo {
         if (!pairs.length) {
             return;
         }
-        pairs.map(pair => {
-            this.index[pair.node.id] = null;
-        })
         return pairs;
     }
 
@@ -377,7 +397,6 @@ export async function asyncFlowRunner(flow, pairs, context) {
                         ret.onoutput(function (vnode) {
                             // 回调的参数是一个VirtualNode
                             // 用于仿造一个node，放到堆栈里，
-                            vnode.setSession(node.getSession() + '_' + cnt++);
                             walk(vnode, null, context);
                         });
 
@@ -386,10 +405,6 @@ export async function asyncFlowRunner(flow, pairs, context) {
                         if (node.out > 0) {
                             // 还有下一步，则把下一步添加到堆栈中
                             let pairs = getNextNodes(node, returnValue, context);
-                            // 为每一个node设置session
-                            pairs.map(pair => {
-                                pair.setSession(node.getSession());
-                            });
                             nodes.concat(pairs);
                         }
                     }
