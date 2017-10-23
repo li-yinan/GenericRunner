@@ -34,6 +34,11 @@ export default class Context {
     }
 
     merge(context) {
-        return merge(this, context);
+        merge(this, context);
+        // 用scope层级最深的那个
+        if (context.scope.length > this.scope.length) {
+            this.scope = context.scope;
+        }
+        return this;
     }
 }

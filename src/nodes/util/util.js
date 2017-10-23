@@ -383,7 +383,15 @@ export async function asyncFlowRunner(flow, pairs, context) {
                 port: link.toPort
             }
         })
-        .map(obj => new Pair(obj.node, data, obj.port, context.clone()));
+        .map(obj => {
+            let newContext = context.clone();
+            newContext.from = {
+                id: node.id,
+                returnValue: returnValue,
+                name: node.name
+            };
+            return new Pair(obj.node, data, obj.port, newContext);
+        });
     }
 
     let cnt = 0;

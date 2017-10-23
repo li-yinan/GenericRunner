@@ -82,6 +82,14 @@ export default class Executable {
     async exec(...args) {
         let context = args.pop();
         this.trace('exec: ', ...args);
+        if (context) {
+            try {
+                console.log('from: ', JSON.stringify(context.from));
+            }
+            catch (e) {
+                console.log('json can\'t be stringified');
+            }
+        }
     }
 
     /**
