@@ -4,14 +4,14 @@ export default class Context {
 
     service = {};
 
-    scope = 's';
+    scope = 's_';
 
     constructor() {
         this.id = +new Date();
     }
 
     newScope() {
-        this.scope = this.scope + '_' + cnt++;
+        this.scope = this.scope + (cnt++) + '_';
     }
 
     registerService(key, value) {
