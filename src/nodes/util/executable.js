@@ -84,6 +84,7 @@ export default class Executable {
         this.trace('exec: ', ...args);
         if (context) {
             try {
+                console.log('trace: from_scope:', context.from.scope, ' current_scope: ', context.scope);
                 console.log('from: ', JSON.stringify(context.from));
             }
             catch (e) {

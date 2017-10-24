@@ -387,6 +387,7 @@ export async function asyncFlowRunner(flow, pairs, context) {
             let newContext = context.clone();
             newContext.from = {
                 id: node.id,
+                scope: context.scope,
                 returnValue: returnValue,
                 name: node.name
             };
