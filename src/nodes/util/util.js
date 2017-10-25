@@ -251,6 +251,11 @@ export function scopeMatch(context1, context2) {
     let longOne = scope1.length > scope2.length ? scope1 : scope2;
     let shortOne = scope1.length < scope2.length ? scope1 : scope2;
 
+    if (scope1.length === scope2.length) {
+        longOne = scope1;
+        shortOne = scope2;
+    }
+
     if (longOne.indexOf(shortOne) === 0) {
         return true;
     }
