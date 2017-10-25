@@ -2,6 +2,7 @@ import Flow from '../flow';
 import SubFlow from '../subflow';
 import Node from './node';
 import ContinuousOutput from './continuousoutput';
+import ReturnValue from './returnvalue';
 import {sep, join} from 'path';
 import {readdir, stat} from 'fs';
 import pify from 'pify';
@@ -314,6 +315,7 @@ class Fifo {
         let {node, params, port, context} = pair;
         let indexedNode = this.cache.find(cachedPair => cachedPair.node.id === node.id && scopeMatch(context, cachedPair.context));
         if (indexedNode) {
+            console.log('addParam: ', params, ' from_scope: ', context.scope, '_to_scope: ', indexedNode.context.scope);
             indexedNode.addParam(params[port], port);
             indexedNode.setContext(context);
         }
@@ -400,6 +402,7 @@ export async function asyncFlowRunner(flow, pairs, context) {
         nodes.push(new Pair(node, param, 0, context.clone()));
         return new Promise(async (resolve, reject) => {
             try {
+                let returnValue = null;
                 async function execNode(node, params, context) {
                     // 执行node
                     let ret = await node.exec.apply(node, params.concat(context));
@@ -412,9 +415,9 @@ export async function asyncFlowRunner(flow, pairs, context) {
                             walk(vnode, null, context);
                         });
 
-                    } else {
+                    } else if (ret instanceof ReturnValue) {
                         try {
-                            console.log('>>>node return<<<', JSON.stringify(ret));
+                            console.log('>>>node return<<< scope:',context.scope,' id: ', node.id, JSON.stringify(ret));
                         }
                         catch (e) {
                             console.log('>>>node return<<<结果无法stringify');
@@ -422,16 +425,15 @@ export async function asyncFlowRunner(flow, pairs, context) {
                         returnValue = ret;
                         if (node.out > 0) {
                             // 还有下一步，则把下一步添加到堆栈中
-                            let pairs = getNextNodes(node, returnValue, context);
+                            let pairs = getNextNodes(node, ret, context);
                             nodes.concat(pairs);
                         }
                     }
                     // 没有下一步了，不用特殊处理，堆栈没了就都执行结束了
-                    return returnValue;
+                    return ret;
                 }
 
                 let pairs = null;
-                let returnValue = null;
                 while (pairs = nodes.shift()) {
                     await Promise.all(pairs.map(({node, params, context}) => execNode(node, params, context)));
                 }
